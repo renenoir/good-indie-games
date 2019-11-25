@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
+# from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -35,3 +36,34 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Genre(models.Model):
+    """Genre of a game"""
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Platform(models.Model):
+    """Platform for a game"""
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Developer(models.Model):
+    """Developer of a game"""
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name

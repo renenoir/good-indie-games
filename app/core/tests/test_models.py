@@ -1,6 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from core import models
+
+
+# def sample_user(email='test@test.com', password='testpass'):
+#     """Create a sample user"""
+#     return get_user_model().objects.create_user(email, password)
+
 
 class ModelTests(TestCase):
 
@@ -35,3 +42,27 @@ class ModelTests(TestCase):
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_genre_str(self):
+        """Test the genre string representation"""
+        genre = models.Genre.objects.create(name='Adventure')
+
+        self.assertEqual(str(genre), genre.name)
+
+    def test_platform_str(self):
+        """Test the platform string representation"""
+        platform = models.Platform.objects.create(name='Android')
+
+        self.assertEqual(str(platform), platform.name)
+
+    def test_developer_str(self):
+        """Test the developer string representation"""
+        developer = models.Developer.objects.create(name='Playdead')
+
+        self.assertEqual(str(developer), developer.name)
+
+    def test_publisher_str(self):
+        """Test the publisher string representation"""
+        publisher = models.Publisher.objects.create(name='Devolver Digital')
+
+        self.assertEqual(str(publisher), publisher.name)

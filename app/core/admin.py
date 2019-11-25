@@ -26,3 +26,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Genre)
+admin.site.register(models.Platform)
+admin.site.register(models.Developer)
+admin.site.register(models.Publisher)
