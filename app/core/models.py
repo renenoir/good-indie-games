@@ -1,7 +1,7 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
-# from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -63,7 +63,26 @@ class Developer(models.Model):
 
 
 class Publisher(models.Model):
+    """Publisher of a game"""
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+
+
+class Game(models.Model):
+    """Game object"""
+    name = models.CharField(max_length=255)
+    summary = models.CharField(max_length=2000)
+    rating = models.IntegerField()
+    first_release_date = models.IntegerField()
+    websites = ArrayField(models.CharField(max_length=255), blank=True)
+    similar_games = ArrayField(models.CharField(max_length=255), blank=True)
+    cover = models.CharField(max_length=255, blank=True)
+    genres = models.ManyToManyField('Genre')
+    platforms = models.ManyToManyField('Platform')
+    developers = models.ManyToManyField('Developer')
+    publishers = models.ManyToManyField('Publisher')
+
+    def __str__(self):
+        return self.name, self.summary

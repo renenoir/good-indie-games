@@ -4,9 +4,17 @@ from django.contrib.auth import get_user_model
 from core import models
 
 
-# def sample_user(email='test@test.com', password='testpass'):
-#     """Create a sample user"""
-#     return get_user_model().objects.create_user(email, password)
+def sample_game():
+    """Create a sample game"""
+    return models.Game.objects.create(
+            name='Minecraft',
+            summary='Some summary',
+            rating=85,
+            first_release_date=1317945600,
+            websites=['https://minecraft.net/',
+                      'https://twitter.com/Minecraft'],
+            similar_games=['Fez', 'Terraria']
+        )
 
 
 class ModelTests(TestCase):
@@ -66,3 +74,10 @@ class ModelTests(TestCase):
         publisher = models.Publisher.objects.create(name='Devolver Digital')
 
         self.assertEqual(str(publisher), publisher.name)
+
+    def test_game_str(self):
+        """Test the game properties string representation"""
+        game = sample_game()
+
+        self.assertEqual(str(game.name), game.name)
+        self.assertEqual(str(game.summary), game.summary)
