@@ -76,8 +76,10 @@ class Game(models.Model):
     summary = models.CharField(max_length=2000)
     rating = models.IntegerField()
     first_release_date = models.IntegerField()
-    websites = ArrayField(models.CharField(max_length=255), blank=True)
-    similar_games = ArrayField(models.CharField(max_length=255), blank=True)
+    websites = ArrayField(models.CharField(max_length=255),
+                          blank=True, null=True)
+    similar_games = ArrayField(models.CharField(max_length=255),
+                               blank=True, null=True)
     cover = models.CharField(max_length=255, blank=True)
     genres = models.ManyToManyField('Genre')
     platforms = models.ManyToManyField('Platform')

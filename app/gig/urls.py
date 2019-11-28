@@ -9,6 +9,7 @@ router.register('genres', views.GenreViewSet)
 router.register('platforms', views.PlatformViewSet)
 router.register('developers', views.DeveloperViewSet)
 router.register('publishers', views.PublisherViewSet)
+router.register('games', views.GameViewSet)
 
 app_name = 'gig'
 

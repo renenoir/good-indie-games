@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Genre, Platform, Developer, Publisher
+from core.models import Genre, Platform, Developer, Publisher, Game
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -37,3 +37,38 @@ class PublisherSerializer(serializers.ModelSerializer):
         model = Publisher
         fields = ('id', 'name')
         read_only_fields = ('id',)
+
+
+class GameSerializer(serializers.ModelSerializer):
+    """Serialize a game"""
+    genres = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Genre.objects.all()
+    )
+    platforms = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Platform.objects.all()
+    )
+    developers = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Developer.objects.all()
+    )
+    publishers = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Publisher.objects.all()
+    )
+
+    class Meta:
+        model = Game
+        fields = ('id', 'name', 'summary', 'rating', 'first_release_date',
+                  'websites', 'similar_games', 'cover', 'genres', 'platforms',
+                  'developers', 'publishers')
+        read_only_fields = ('id',)
+
+
+class GameDetailSerializer(GameSerializer):
+    """Serialize a game detail"""
+    genres = GenreSerializer(many=True, read_only=True)
+    platforms = PlatformSerializer(many=True, read_only=True)
+    developers = DeveloperSerializer(many=True, read_only=True)
+    publishers = PublisherSerializer(many=True, read_only=True)
