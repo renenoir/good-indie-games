@@ -8,6 +8,8 @@ from core.models import Game, Genre, Platform, Developer, Publisher
 
 from gig.serializers import GameSerializer, GameDetailSerializer
 
+import datetime
+
 
 GAMES_URL = reverse('gig:game-list')
 
@@ -43,7 +45,7 @@ def sample_game(**params):
         'name': 'Mass Effect',
         'summary': 'best game ever',
         'rating': 90,
-        'first_release_date': 1317945600
+        'first_release_date': datetime.datetime.fromtimestamp(1317945600)
     }
     defaults.update(params)
 
@@ -164,6 +166,28 @@ class GameApiTests(TestCase):
             {'publishers': f'{publisher1.id},{publisher2.id}'}
         )
 
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
+        serializer3 = GameSerializer(game3)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
+
+    def test_filter_games_by_date(self):
+        """Test filter games by date"""
+        game1 = sample_game(
+            first_release_date=datetime.datetime.fromtimestamp(1417943600)
+            )
+        game2 = sample_game(
+            first_release_date=datetime.datetime.fromtimestamp(1407995600)
+            )
+        game3 = sample_game()
+
+        date = datetime.datetime.fromtimestamp(1400000000)
+        res = self.client.get(
+            GAMES_URL,
+            {'first_release_date__gte': date}
+        )
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)

@@ -10,7 +10,12 @@ class BaseGameAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
 
     def get_queryset(self):
         """Return objects"""
-        return self.queryset.order_by('-name')
+        assigned_only = bool(self.request.query_params.get('assigned_only'))
+        queryset = self.queryset
+        if assigned_only:
+            queryset = queryset.filter(game__isnull=False)
+
+        return queryset.order_by('-name')
 
 
 class GenreViewSet(BaseGameAttrViewSet):
@@ -41,6 +46,9 @@ class GameViewSet(viewsets.ModelViewSet):
     """View games in the database"""
     queryset = Game.objects.all()
     serializer_class = serializers.GameSerializer
+    filterset_fields = {
+       'first_release_date': ['exact', 'lte', 'gte']
+    }
 
     def _params_to_ints(self, qs):
         """Convert a list of string IDs to a list of integers"""

@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 
 from core import models
 
+import datetime
+
 
 def sample_game():
     """Create a sample game"""
@@ -10,7 +12,7 @@ def sample_game():
             name='Minecraft',
             summary='Some summary',
             rating=85,
-            first_release_date=1317945600,
+            first_release_date=datetime.datetime.fromtimestamp(1317945600),
             websites=['https://minecraft.net/',
                       'https://twitter.com/Minecraft'],
             similar_games=['Fez', 'Terraria']
@@ -81,3 +83,10 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(game.name), game.name)
         self.assertEqual(str(game.summary), game.summary)
+
+    def test_game_first_release_date_datetime(self):
+        """Test the game first release date datetime representation"""
+        game = sample_game()
+
+        self.assertEqual(game.first_release_date.strftime('%Y-%m-%d'),
+                         '2011-10-07')

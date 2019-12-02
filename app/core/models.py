@@ -3,6 +3,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 
+from django.utils import timezone
+
 
 class UserManager(BaseUserManager):
 
@@ -75,7 +77,11 @@ class Game(models.Model):
     name = models.CharField(max_length=255)
     summary = models.CharField(max_length=2000)
     rating = models.IntegerField()
-    first_release_date = models.IntegerField()
+    first_release_date = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=False,
+        default=timezone.now
+        )
     websites = ArrayField(models.CharField(max_length=255),
                           blank=True, null=True)
     similar_games = ArrayField(models.CharField(max_length=255),
