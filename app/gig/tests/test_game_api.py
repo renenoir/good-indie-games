@@ -19,7 +19,7 @@ def detail_url(game_id):
     return reverse('gig:game-detail', args=[game_id])
 
 
-def sample_genre(name='Adventure'):
+def sample_genre(name='Arcade'):
     """Create and return a sample genre"""
     return Genre.objects.create(name=name)
 
@@ -42,6 +42,7 @@ def sample_publisher(name='EA'):
 def sample_game(**params):
     """Create and return a sample game"""
     defaults = {
+        'igdb_id': 1,
         'name': 'Mass Effect',
         'summary': 'best game ever',
         'rating': 90,
@@ -60,16 +61,17 @@ class GameApiTests(TestCase):
 
     def test_retrieve_games(self):
         """Test retrieving a list of games"""
-        sample_game(name='Bioshock')
-        sample_game()
+        game1 = sample_game()
+        game2 = sample_game(name='Bioshock')
 
         res = self.client.get(GAMES_URL)
 
-        games = Game.objects.all().order_by('id')
-        serializer = GameSerializer(games, many=True)
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
 
     def test_view_game_detail(self):
         """Test viewing a game detail"""
@@ -90,7 +92,7 @@ class GameApiTests(TestCase):
         game1 = sample_game(name='Limbo')
         game2 = sample_game(name='Dishonored')
         genre1 = sample_genre(name='Indie')
-        genre2 = sample_genre(name='Adventure')
+        genre2 = sample_genre(name='Simulator')
         game1.genres.add(genre1)
         game2.genres.add(genre2)
         game3 = sample_game(name='Watch Dogs')
@@ -194,3 +196,25 @@ class GameApiTests(TestCase):
         self.assertIn(serializer1.data, res.data)
         self.assertIn(serializer2.data, res.data)
         self.assertNotIn(serializer3.data, res.data)
+
+    def test_return_game_from_similar_games(self):
+        """Test returning game by igdb_id in similar games"""
+        game1 = sample_game(similar_games=[2, 3])
+        game2 = sample_game(igdb_id=2, name='Terraria')
+        game3 = sample_game(igdb_id=3, name='Fez')
+
+        similar_games = ","
+        similar_games = similar_games.join(str(x) for x in game1.similar_games)
+
+        res = self.client.get(
+            GAMES_URL,
+            {'igdb_ids': similar_games}
+        )
+
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
+        serializer3 = GameSerializer(game3)
+
+        self.assertIn(serializer2.data, res.data)
+        self.assertIn(serializer3.data, res.data)
+        self.assertNotIn(serializer1.data, res.data)

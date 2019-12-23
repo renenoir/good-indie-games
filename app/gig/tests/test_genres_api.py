@@ -23,7 +23,7 @@ class GenresApiTests(TestCase):
     def test_retrieve_genres_list(self):
         """Test retrieving a list of genres"""
         Genre.objects.create(name='Western')
-        Genre.objects.create(name='Adventure')
+        Genre.objects.create(name='Stradegy')
 
         res = self.client.get(GENRES_URL)
 
@@ -37,6 +37,7 @@ class GenresApiTests(TestCase):
         genre1 = Genre.objects.create(name='Platformer')
         genre2 = Genre.objects.create(name='Horror')
         game = Game.objects.create(
+            igdb_id=1,
             name='Minecraft',
             summary='Some summary',
             rating=85,

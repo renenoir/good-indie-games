@@ -37,6 +37,7 @@ class PublishersApiTests(TestCase):
         publisher1 = Publisher.objects.create(name='BlitWorks')
         publisher2 = Publisher.objects.create(name='IMGN.PRO')
         game = Game.objects.create(
+            igdb_id=1,
             name='Minecraft',
             summary='Some summary',
             rating=85,

@@ -74,23 +74,24 @@ class Publisher(models.Model):
 
 class Game(models.Model):
     """Game object"""
+    igdb_id = models.IntegerField()
     name = models.CharField(max_length=255)
-    summary = models.CharField(max_length=2000)
+    summary = models.CharField(max_length=10000)
     rating = models.IntegerField()
     first_release_date = models.DateTimeField(
         auto_now=False,
         auto_now_add=False,
         default=timezone.now
         )
+    cover = models.CharField(max_length=255, blank=True)
     websites = ArrayField(models.CharField(max_length=255),
                           blank=True, null=True)
     similar_games = ArrayField(models.CharField(max_length=255),
                                blank=True, null=True)
-    cover = models.CharField(max_length=255, blank=True)
     genres = models.ManyToManyField('Genre')
     platforms = models.ManyToManyField('Platform')
     developers = models.ManyToManyField('Developer')
     publishers = models.ManyToManyField('Publisher')
 
     def __str__(self):
-        return self.name, self.summary
+        return '{}, {}, {}'.format(self.name, self.summary, self.cover)

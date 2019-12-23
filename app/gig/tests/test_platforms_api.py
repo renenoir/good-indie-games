@@ -37,6 +37,7 @@ class PlatformsApiTests(TestCase):
         platform1 = Platform.objects.create(name='Switch')
         platform2 = Platform.objects.create(name='PC')
         game = Game.objects.create(
+            igdb_id=1,
             name='Minecraft',
             summary='Some summary',
             rating=85,

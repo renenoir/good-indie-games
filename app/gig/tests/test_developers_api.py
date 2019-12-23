@@ -37,6 +37,7 @@ class DevelopersApiTests(TestCase):
         developer1 = Developer.objects.create(name='Fullbright')
         developer2 = Developer.objects.create(name='Frictional Games')
         game = Game.objects.create(
+            igdb_id=1,
             name='Minecraft',
             summary='Some summary',
             rating=85,

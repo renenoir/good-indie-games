@@ -60,6 +60,7 @@ class GameViewSet(viewsets.ModelViewSet):
         platforms = self.request.query_params.get('platforms')
         developers = self.request.query_params.get('developers')
         publishers = self.request.query_params.get('publishers')
+        igdb_ids = self.request.query_params.get('igdb_ids')
         queryset = self.queryset
 
         if genres:
@@ -74,8 +75,11 @@ class GameViewSet(viewsets.ModelViewSet):
         if publishers:
             publisher_ids = self._params_to_ints(publishers)
             queryset = queryset.filter(publishers__id__in=publisher_ids)
+        if igdb_ids:
+            igdb_ids_arr = self._params_to_ints(igdb_ids)
+            queryset = queryset.filter(igdb_id__in=igdb_ids_arr)
 
-        return queryset
+        return queryset.distinct()
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""

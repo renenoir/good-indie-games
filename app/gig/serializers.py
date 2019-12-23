@@ -60,9 +60,9 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'name', 'summary', 'rating', 'first_release_date',
-                  'websites', 'similar_games', 'cover', 'genres', 'platforms',
-                  'developers', 'publishers')
+        fields = ('id', 'igdb_id', 'name', 'summary', 'rating',
+                  'first_release_date', 'websites', 'similar_games', 'cover',
+                  'genres', 'platforms', 'developers', 'publishers')
         read_only_fields = ('id',)
 
 

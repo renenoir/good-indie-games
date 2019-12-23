@@ -9,6 +9,7 @@ import datetime
 def sample_game():
     """Create a sample game"""
     return models.Game.objects.create(
+            igdb_id=1,
             name='Minecraft',
             summary='Some summary',
             rating=85,
@@ -55,7 +56,7 @@ class ModelTests(TestCase):
 
     def test_genre_str(self):
         """Test the genre string representation"""
-        genre = models.Genre.objects.create(name='Adventure')
+        genre = models.Genre.objects.create(name='Shooter')
 
         self.assertEqual(str(genre), genre.name)
 
