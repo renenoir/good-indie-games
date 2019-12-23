@@ -26,7 +26,7 @@ class GenreViewSet(BaseGameAttrViewSet):
 
 class ThemeViewSet(BaseGameAttrViewSet):
     queryset = Theme.objects.all()
-    serializer_class = serializers.ThemeSerializer
+    serilizer_class = serializers.ThemeSerializer
 
 
 class PlatformViewSet(BaseGameAttrViewSet):
@@ -62,7 +62,6 @@ class GameViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Retrieve the games"""
         genres = self.request.query_params.get('genres')
-        themes = self.request.query_params.get('themes')
         platforms = self.request.query_params.get('platforms')
         developers = self.request.query_params.get('developers')
         publishers = self.request.query_params.get('publishers')
@@ -72,9 +71,6 @@ class GameViewSet(viewsets.ModelViewSet):
         if genres:
             genre_ids = self._params_to_ints(genres)
             queryset = queryset.filter(genres__id__in=genre_ids)
-        if themes:
-            theme_ids = self._params_to_ints(themes)
-            queryset = queryset.filter(themes__id__in=theme_ids)
         if platforms:
             platform_ids = self._params_to_ints(platforms)
             queryset = queryset.filter(platforms__id__in=platform_ids)

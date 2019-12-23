@@ -126,7 +126,7 @@ class GameApiTests(TestCase):
 
         res = self.client.get(
             GAMES_URL,
-            {'themes': f'{theme1.id},{theme2.id}'}
+            {'genres': f'{theme1.id},{theme2.id}'}
         )
 
         serializer1 = GameSerializer(game1)
@@ -140,7 +140,7 @@ class GameApiTests(TestCase):
         """Test returning games with specific platforms"""
         game1 = sample_game()
         game2 = sample_game(name='Dishonored')
-        platform1 = sample_platform()
+        platform1 = sample_platform(name='PC')
         platform2 = sample_platform(name='PS4')
         game1.platforms.add(platform1)
         game2.platforms.add(platform2)
@@ -162,7 +162,7 @@ class GameApiTests(TestCase):
         """Test returning games with specific developers"""
         game1 = sample_game()
         game2 = sample_game(name='Dishonored')
-        developer1 = sample_developer()
+        developer1 = sample_developer(name='Playdead')
         developer2 = sample_developer(name='Arkane Studios')
         game1.developers.add(developer1)
         game2.developers.add(developer2)
@@ -184,7 +184,7 @@ class GameApiTests(TestCase):
         """Test returning games with specific publishers"""
         game1 = sample_game()
         game2 = sample_game(name='Dishonored')
-        publisher1 = sample_publisher()
+        publisher1 = sample_publisher(name='Microsoft Game Studios')
         publisher2 = sample_publisher(name='Bethesda Softworks')
         game1.publishers.add(publisher1)
         game2.publishers.add(publisher2)

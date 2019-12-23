@@ -75,14 +75,13 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = ('id', 'igdb_id', 'name', 'summary', 'rating',
                   'first_release_date', 'websites', 'similar_games', 'cover',
-                  'genres', 'themes', 'platforms', 'developers', 'publishers')
+                  'genres', 'platforms', 'developers', 'publishers')
         read_only_fields = ('id',)
 
 
 class GameDetailSerializer(GameSerializer):
     """Serialize a game detail"""
     genres = GenreSerializer(many=True, read_only=True)
-    themes = ThemeSerializer(many=True, read_only=True)
     platforms = PlatformSerializer(many=True, read_only=True)
     developers = DeveloperSerializer(many=True, read_only=True)
     publishers = PublisherSerializer(many=True, read_only=True)

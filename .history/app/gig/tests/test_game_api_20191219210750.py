@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Game, Genre, Theme, Platform, Developer, Publisher
+from core.models import Game, Genre, Platform, Developer, Publisher
 
 from gig.serializers import GameSerializer, GameDetailSerializer
 
@@ -22,11 +22,6 @@ def detail_url(game_id):
 def sample_genre(name='Arcade'):
     """Create and return a sample genre"""
     return Genre.objects.create(name=name)
-
-
-def sample_theme(name='Fantasy'):
-    """Create and return a sample theme"""
-    return Theme.objects.create(name=name)
 
 
 def sample_platform(name='PC'):
@@ -94,9 +89,9 @@ class GameApiTests(TestCase):
 
     def test_filter_games_by_genres(self):
         """Test returning games with specific genres"""
-        game1 = sample_game()
+        game1 = sample_game(name='Limbo')
         game2 = sample_game(name='Dishonored')
-        genre1 = sample_genre()
+        genre1 = sample_genre(name='Indie')
         genre2 = sample_genre(name='Simulator')
         game1.genres.add(genre1)
         game2.genres.add(genre2)
@@ -114,33 +109,11 @@ class GameApiTests(TestCase):
         self.assertIn(serializer2.data, res.data)
         self.assertNotIn(serializer3.data, res.data)
 
-    def test_filter_games_by_themes(self):
-        """Test returning games with specific themes"""
-        game1 = sample_game()
-        game2 = sample_game(name='Dishonored')
-        theme1 = sample_theme()
-        theme2 = sample_theme(name='Sandbox')
-        game1.themes.add(theme1)
-        game2.themes.add(theme2)
-        game3 = sample_game(name='Watch Dogs')
-
-        res = self.client.get(
-            GAMES_URL,
-            {'themes': f'{theme1.id},{theme2.id}'}
-        )
-
-        serializer1 = GameSerializer(game1)
-        serializer2 = GameSerializer(game2)
-        serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
-
     def test_filter_games_by_platforms(self):
         """Test returning games with specific platforms"""
-        game1 = sample_game()
+        game1 = sample_game(name='Limbo')
         game2 = sample_game(name='Dishonored')
-        platform1 = sample_platform()
+        platform1 = sample_platform(name='PC')
         platform2 = sample_platform(name='PS4')
         game1.platforms.add(platform1)
         game2.platforms.add(platform2)
@@ -160,9 +133,9 @@ class GameApiTests(TestCase):
 
     def test_filter_games_by_developers(self):
         """Test returning games with specific developers"""
-        game1 = sample_game()
+        game1 = sample_game(name='Limbo')
         game2 = sample_game(name='Dishonored')
-        developer1 = sample_developer()
+        developer1 = sample_developer(name='Playdead')
         developer2 = sample_developer(name='Arkane Studios')
         game1.developers.add(developer1)
         game2.developers.add(developer2)
@@ -182,9 +155,9 @@ class GameApiTests(TestCase):
 
     def test_filter_games_by_publishers(self):
         """Test returning games with specific publishers"""
-        game1 = sample_game()
+        game1 = sample_game(name='Limbo')
         game2 = sample_game(name='Dishonored')
-        publisher1 = sample_publisher()
+        publisher1 = sample_publisher(name='Microsoft Game Studios')
         publisher2 = sample_publisher(name='Bethesda Softworks')
         game1.publishers.add(publisher1)
         game2.publishers.add(publisher2)

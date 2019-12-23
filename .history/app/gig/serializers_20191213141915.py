@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Genre, Theme, Platform, Developer, Publisher, Game
+from core.models import Genre, Platform, Developer, Publisher, Game
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -8,15 +8,6 @@ class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('id', 'name')
-        read_only_fields = ('id',)
-
-
-class ThemeSerializer(serializers.ModelSerializer):
-    """Serializer for theme objects"""
-
-    class Meta:
-        model = Theme
         fields = ('id', 'name')
         read_only_fields = ('id',)
 
@@ -54,10 +45,6 @@ class GameSerializer(serializers.ModelSerializer):
         many=True,
         queryset=Genre.objects.all()
     )
-    themes = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Theme.objects.all()
-    )
     platforms = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Platform.objects.all()
@@ -75,14 +62,13 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = ('id', 'igdb_id', 'name', 'summary', 'rating',
                   'first_release_date', 'websites', 'similar_games', 'cover',
-                  'genres', 'themes', 'platforms', 'developers', 'publishers')
+                  'genres', 'platforms', 'developers', 'publishers')
         read_only_fields = ('id',)
 
 
 class GameDetailSerializer(GameSerializer):
     """Serialize a game detail"""
     genres = GenreSerializer(many=True, read_only=True)
-    themes = ThemeSerializer(many=True, read_only=True)
     platforms = PlatformSerializer(many=True, read_only=True)
     developers = DeveloperSerializer(many=True, read_only=True)
     publishers = PublisherSerializer(many=True, read_only=True)

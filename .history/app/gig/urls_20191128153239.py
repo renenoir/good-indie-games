@@ -6,7 +6,6 @@ from gig import views
 
 router = DefaultRouter()
 router.register('genres', views.GenreViewSet)
-router.register('themes', views.ThemeViewSet)
 router.register('platforms', views.PlatformViewSet)
 router.register('developers', views.DeveloperViewSet)
 router.register('publishers', views.PublisherViewSet)

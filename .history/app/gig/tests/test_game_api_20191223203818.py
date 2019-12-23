@@ -126,7 +126,7 @@ class GameApiTests(TestCase):
 
         res = self.client.get(
             GAMES_URL,
-            {'themes': f'{theme1.id},{theme2.id}'}
+            {'genres': f'{theme1.id},{theme2.id}'}
         )
 
         serializer1 = GameSerializer(game1)
