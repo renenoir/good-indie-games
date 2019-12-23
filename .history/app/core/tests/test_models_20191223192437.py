@@ -60,12 +60,6 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(genre), genre.name)
 
-    def test_theme_str(self):
-        """Test the theme string representation"""
-        theme = models.Theme.objects.create(name='Fantasy')
-
-        self.assertEqual(str(theme), theme.name)
-
     def test_platform_str(self):
         """Test the platform string representation"""
         platform = models.Platform.objects.create(name='Android')
@@ -97,3 +91,9 @@ class ModelTests(TestCase):
 
         self.assertEqual(game.first_release_date.strftime('%Y-%m-%d'),
                          '2011-10-07')
+
+    def test_theme_str(self):
+        """Test the theme string representation"""
+        theme = models.Theme.objects.create(name='Fantasy')
+
+        self.assertEqual(str(theme), theme.name)

@@ -50,7 +50,7 @@ class Genre(models.Model):
 
 class Theme(models.Model):
     """Theme of a game"""
-    name = models.CharField(max_length=255)
+    name = models.Charfield(max_length=255)
 
     def __str__(self):
         return self.name

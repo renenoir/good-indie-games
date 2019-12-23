@@ -48,14 +48,6 @@ class Genre(models.Model):
         return self.name
 
 
-class Theme(models.Model):
-    """Theme of a game"""
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
-
 class Platform(models.Model):
     """Platform for a game"""
     name = models.CharField(max_length=255)
@@ -97,7 +89,6 @@ class Game(models.Model):
     similar_games = ArrayField(models.CharField(max_length=255),
                                blank=True, null=True)
     genres = models.ManyToManyField('Genre')
-    themes = models.ManyToManyField('Theme')
     platforms = models.ManyToManyField('Platform')
     developers = models.ManyToManyField('Developer')
     publishers = models.ManyToManyField('Publisher')
