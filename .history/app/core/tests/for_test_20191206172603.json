@@ -164,24 +164,6 @@
       }
     ],
     "summary": "Minecraft is an open world game that has no specific goals for the player to accomplish, allowing players a large amount of freedom in choosing how to play the game however, there is an achievement system. The gameplay by default is first person, but players have the option to play in third person mode. The core gameplay revolves around breaking and placing blocks. The game world is essentially composed of rough 3D objects—mainly cubes—that are arranged in a fixed grid pattern and represent different materials, such as dirt, stone, various ores, water, and tree trunks. While players can move freely across the world, objects and items can only be placed at fixed locations relative to the grid. Players can gather these material blocks and place them elsewhere, thus allowing for various constructions.",
-    "themes": [
-      {
-          "id": 17,
-          "name": "Fantasy"
-      },
-      {
-          "id": 21,
-          "name": "Survival"
-      },
-      {
-          "id": 33,
-          "name": "Sandbox"
-      },
-      {
-          "id": 38,
-          "name": "Open world"
-      }
-    ],
     "total_rating": 83.49658831766985,
     "websites": [
       {
@@ -355,16 +337,6 @@
       }
     ],
     "summary": "A top-down slasher/shooter with unlockable gameplay-altering masks and weapons, featuring a neon-flavoured electronic aesthetic, in which a hitman receives anonymous calls ordering him to travel to certain residences and crime dens and massacre those within, as he stumbles through unreal visions and inconsistencies without any answers to how, why or who.",
-    "themes": [
-      {
-        "id": 1,
-        "name": "Action"
-      },
-      {
-        "id": 19,
-        "name": "Horror"
-      }
-    ],
     "total_rating": 85.38635488210375,
     "websites": [
       {

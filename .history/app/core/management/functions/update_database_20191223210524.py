@@ -52,7 +52,8 @@ def update_database(response_dict):
         themes_list = game_item.get('themes')
         themes = list(
             map(lambda theme: theme.get('name'), themes_list)
-        ) if isinstance(themes_list, list) else ['Other']
+        ) if isinstance(themes_list, list) else []
+        print(themes)
 
         platforms_list = game_item.get('platforms')
         platforms = list(
@@ -97,10 +98,14 @@ def update_database(response_dict):
                 game.genres.add(Genre.objects.get(name=gen))
         for theme in themes:
             if theme not in theme_names:
-                game.themes.add(Theme.objects.create(name=theme))
+                t = Theme.objects.create(name=theme)
+                game.themes.add(t)
                 theme_names.append(theme)
+                print(t)
             else:
-                game.themes.add(Theme.objects.get(name=theme))
+                t = Theme.objects.get(name=theme)
+                game.themes.add(t)
+                print(t)
         for platf in platforms:
             if platf not in plat_names:
                 game.platforms.add(Platform.objects.create(name=platf))

@@ -10,7 +10,7 @@ def get_data_from_api(limit, offset):
     data = 'fields name, summary, websites.url, similar_games.name, \
             platforms.name, involved_companies.company.name, \
             involved_companies.developer, cover.url, \
-            genres.name, themes.name, total_rating, first_release_date; \
+            genres.name, total_rating, first_release_date; \
             where rating > 65 & genres = (32); \
             sort total_rating_count desc; \
             offset ' + f"{offset}" + '; limit ' + f"{limit}" + ';'

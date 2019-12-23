@@ -6,9 +6,9 @@ import datetime
 def update_database(response_dict):
     """Function for creating game objects and updating the database"""
 
-    # All genres, themes, platforms, developers and publishers names in the db
+    # All genres, platforms, developers and publishers names in the database
     gen_names = list(map(lambda gen: gen.name, Genre.objects.all()))
-    theme_names = list(map(lambda them: them.name, Theme.objects.all()))
+    them_names = list(map(lambda them: them.name, Theme.objects.all()))
     plat_names = list(map(lambda plat: plat.name, Platform.objects.all()))
     dev_names = list(map(lambda dev: dev.name, Developer.objects.all()))
     pub_names = list(map(lambda pub: pub.name, Publisher.objects.all()))
@@ -48,11 +48,6 @@ def update_database(response_dict):
         genres = list(
             map(lambda genre: genre.get('name'), genres_list)
         ) if isinstance(genres_list, list) else []
-
-        themes_list = game_item.get('themes')
-        themes = list(
-            map(lambda theme: theme.get('name'), themes_list)
-        ) if isinstance(themes_list, list) else ['Other']
 
         platforms_list = game_item.get('platforms')
         platforms = list(
@@ -95,12 +90,6 @@ def update_database(response_dict):
                 gen_names.append(gen)
             else:
                 game.genres.add(Genre.objects.get(name=gen))
-        for theme in themes:
-            if theme not in theme_names:
-                game.themes.add(Theme.objects.create(name=theme))
-                theme_names.append(theme)
-            else:
-                game.themes.add(Theme.objects.get(name=theme))
         for platf in platforms:
             if platf not in plat_names:
                 game.platforms.add(Platform.objects.create(name=platf))
