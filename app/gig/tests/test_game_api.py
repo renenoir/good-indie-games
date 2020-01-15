@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -12,6 +13,7 @@ import datetime
 
 
 GAMES_URL = reverse('gig:game-list')
+SAVED_URL = reverse('gig:saved-list')
 
 
 def detail_url(game_id):
@@ -245,3 +247,65 @@ class GameApiTests(TestCase):
         self.assertIn(serializer2.data, res.data)
         self.assertIn(serializer3.data, res.data)
         self.assertNotIn(serializer1.data, res.data)
+
+    def test_saved_only_for_authenticated_users(self):
+        """Test that authentication is required for saved"""
+        res = self.client.get(SAVED_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_add_to_saved_for_authenticated_users(self):
+        """Test that authentication is required for adding to saved"""
+        game = sample_game()
+
+        res = self.client.post(reverse(
+            'gig:game-add-to-saved',
+            args=[game.id]
+        ))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class PrivateGameApiTests(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = get_user_model().objects.create_user(
+            'test@test.com',
+            'testpass'
+        )
+        self.client.force_authenticate(self.user)
+
+    def test_retrieve_saved_games(self):
+        """Test retrieving games saved by the user"""
+        game1 = sample_game()
+        game2 = sample_game(igdb_id=13, name='Fez')
+        game3 = sample_game(igdb_id=14, name='Terraria')
+
+        self.user.saved.add(game2)
+        self.user.saved.add(game3)
+
+        res = self.client.get(SAVED_URL)
+
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
+        serializer3 = GameSerializer(game3)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertNotIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertIn(serializer3.data, res.data)
+
+    def test_add_to_saved(self):
+        """Test the game is added to the saved"""
+        game = sample_game()
+
+        res1 = self.client.post(reverse(
+            'gig:game-add-to-saved',
+            args=[game.id]
+        ))
+        res2 = self.client.get(SAVED_URL)
+
+        serializer = GameSerializer(game)
+
+        self.assertEqual(res1.status_code, status.HTTP_200_OK)
+        self.assertTrue(serializer.data, res2.data)

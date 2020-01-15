@@ -10,10 +10,11 @@ router.register('themes', views.ThemeViewSet)
 router.register('platforms', views.PlatformViewSet)
 router.register('developers', views.DeveloperViewSet)
 router.register('publishers', views.PublisherViewSet)
+router.register('saved', views.SavedViewSet, basename='saved')
 router.register('games', views.GameViewSet)
 
 app_name = 'gig'
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
 ]

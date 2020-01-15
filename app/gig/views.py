@@ -1,12 +1,17 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-from core.models import Genre, Theme, Platform, Developer, Publisher, Game
-
+from core.models import Genre, Theme, Platform, Developer, Publisher, Game, \
+                                                                      User
 from gig import serializers
 
 
 class BaseGameAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     """Base viewset for game attributes"""
+    authentication_classes = (TokenAuthentication,)
 
     def get_queryset(self):
         """Return objects"""
@@ -25,6 +30,7 @@ class GenreViewSet(BaseGameAttrViewSet):
 
 
 class ThemeViewSet(BaseGameAttrViewSet):
+    """View themes in the database"""
     queryset = Theme.objects.all()
     serializer_class = serializers.ThemeSerializer
 
@@ -51,6 +57,7 @@ class GameViewSet(viewsets.ModelViewSet):
     """View games in the database"""
     queryset = Game.objects.all()
     serializer_class = serializers.GameSerializer
+    authentication_classes = (TokenAuthentication,)
     filterset_fields = {
        'first_release_date': ['exact', 'lte', 'gte']
     }
@@ -96,3 +103,37 @@ class GameViewSet(viewsets.ModelViewSet):
             return serializers.GameDetailSerializer
 
         return self.serializer_class
+
+    @action(methods=['GET', 'POST'], detail=True, url_path='add-to-saved')
+    def add_to_saved(self, request, pk=None):
+        """Add a game to saved"""
+        game = self.get_object()
+
+        try:
+            user = User.objects.get(id=self.request.user.id)
+        except User.DoesNotExist:
+            return Response(
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        else:
+            user.saved.add(game)
+            return Response(
+                status=status.HTTP_200_OK
+            )
+
+
+class SavedViewSet(viewsets.ModelViewSet):
+    """View saved in the database"""
+    queryset = Game.objects.all()
+    serializer_class = serializers.GameSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    filterset_fields = {
+       'first_release_date': ['exact', 'lte', 'gte']
+    }
+
+    def get_queryset(self):
+        """Retrieve saved games"""
+        queryset = self.queryset.filter(user=self.request.user)
+
+        return queryset
