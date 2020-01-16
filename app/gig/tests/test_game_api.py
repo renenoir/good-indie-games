@@ -254,7 +254,7 @@ class GameApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_add_to_saved_for_authenticated_users(self):
+    def test_add_to_saved_only_for_authenticated_users(self):
         """Test that authentication is required for adding to saved"""
         game = sample_game()
 
@@ -262,6 +262,17 @@ class GameApiTests(TestCase):
             'gig:game-add-to-saved',
             args=[game.id]
         ))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_remove_from_saved_only_for_authenticated_users(self):
+        """Test that authentication is required for remove from saved"""
+        game = sample_game()
+
+        res = self.client.post(reverse(
+            'gig:game-remove-from-saved',
+            args=[game.id]
+        ))
+
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -309,3 +320,19 @@ class PrivateGameApiTests(TestCase):
 
         self.assertEqual(res1.status_code, status.HTTP_200_OK)
         self.assertTrue(serializer.data, res2.data)
+
+    def test_remove_from_saved(self):
+        """Test the game is removed from the saved"""
+        game = sample_game()
+        self.user.saved.add(game)
+
+        res1 = self.client.post(reverse(
+            'gig:game-remove-from-saved',
+            args=[game.id]
+        ))
+        res2 = self.client.get(SAVED_URL)
+
+        serializer = GameSerializer(game)
+
+        self.assertEqual(res1.status_code, status.HTTP_200_OK)
+        self.assertNotIn(serializer.data, res2.data)

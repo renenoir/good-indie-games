@@ -121,6 +121,23 @@ class GameViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_200_OK
             )
 
+    @action(methods=['GET', 'POST'], detail=True, url_path='remove-from-saved')
+    def remove_from_saved(self, request, pk=None):
+        """Remove a game from saved"""
+        game = self.get_object()
+
+        try:
+            user = User.objects.get(id=self.request.user.id)
+        except User.DoesNotExist:
+            return Response(
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        else:
+            user.saved.remove(game)
+            return Response(
+                status=status.HTTP_200_OK
+            )
+
 
 class SavedViewSet(viewsets.ModelViewSet):
     """View saved in the database"""

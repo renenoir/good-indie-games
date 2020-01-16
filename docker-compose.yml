@@ -22,7 +22,12 @@ services:
 
   db:
     image: postgres:10-alpine
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=app
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+volumes:
+  dbdata:
