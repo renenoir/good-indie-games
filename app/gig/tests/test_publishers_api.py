@@ -30,7 +30,7 @@ class PublishersApiTests(TestCase):
         publishers = Publisher.objects.all().order_by('-name')
         serializer = PublisherSerializer(publishers, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.data['results'], serializer.data)
 
     def test_retrieve_publishers_assigned_to_games(self):
         """Test filtering publishers by those assigned to games"""
@@ -52,5 +52,5 @@ class PublishersApiTests(TestCase):
 
         serializer1 = PublisherSerializer(publisher1)
         serializer2 = PublisherSerializer(publisher2)
-        self.assertIn(serializer1.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertNotIn(serializer2.data, res.data['results'])

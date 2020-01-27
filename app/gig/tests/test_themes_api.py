@@ -30,7 +30,7 @@ class ThemesApiTests(TestCase):
         serializer = ThemeSerializer(themes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(serializer.data, res.data)
+        self.assertEqual(res.data['results'], serializer.data)
 
     def test_retrieve_themes_assigned_to_games(self):
         """Test filtering themes by those assigned to games"""
@@ -53,5 +53,5 @@ class ThemesApiTests(TestCase):
 
         serializer1 = ThemeSerializer(theme1)
         serializer2 = ThemeSerializer(theme2)
-        self.assertIn(serializer1.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertNotIn(serializer2.data, res.data['results'])

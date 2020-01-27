@@ -40,7 +40,9 @@ def update_database(response_dict):
 
         similar_games_list = game_item.get('similar_games')
         similar_games = list(map(
-            lambda similar_game: similar_game.get('id'),
+            lambda similar_game: (similar_game.get('id') if isinstance(
+                similar_game, dict
+            ) else False),
             similar_games_list
         )) if isinstance(similar_games_list, list) else []
 

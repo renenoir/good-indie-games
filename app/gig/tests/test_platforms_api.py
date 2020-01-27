@@ -30,7 +30,7 @@ class PlatformsApiTests(TestCase):
         platforms = Platform.objects.all().order_by('-name')
         serializer = PlatformSerializer(platforms, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.data['results'], serializer.data)
 
     def test_retrieve_platforms_assigned_to_games(self):
         """Test filtering platforms by those assigned to games"""
@@ -51,5 +51,5 @@ class PlatformsApiTests(TestCase):
 
         serailizer1 = PlatformSerializer(platform1)
         serializer2 = PlatformSerializer(platform2)
-        self.assertIn(serailizer1.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        self.assertIn(serailizer1.data, res.data['results'])
+        self.assertNotIn(serializer2.data, res.data['results'])

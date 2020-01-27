@@ -40,6 +40,6 @@ class FunctionsForUpdateDBTests(TestCase):
         )
         res = self.client.get(reverse('gig:game-list'))
 
-        self.assertEqual(len(res.data), 2)
+        self.assertEqual(len(res.data['results']), 2)
         self.assertTrue(res1.data)
         self.assertTrue(res2.data)

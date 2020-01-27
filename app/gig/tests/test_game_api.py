@@ -77,8 +77,8 @@ class GameApiTests(TestCase):
         serializer2 = GameSerializer(game2)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
 
     def test_view_game_detail(self):
         """Test viewing a game detail"""
@@ -112,9 +112,9 @@ class GameApiTests(TestCase):
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_filter_games_by_themes(self):
         """Test returning games with specific themes"""
@@ -134,9 +134,9 @@ class GameApiTests(TestCase):
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_filter_games_by_platforms(self):
         """Test returning games with specific platforms"""
@@ -156,9 +156,9 @@ class GameApiTests(TestCase):
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_filter_games_by_developers(self):
         """Test returning games with specific developers"""
@@ -178,9 +178,9 @@ class GameApiTests(TestCase):
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_filter_games_by_publishers(self):
         """Test returning games with specific publishers"""
@@ -200,9 +200,9 @@ class GameApiTests(TestCase):
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_filter_games_by_date(self):
         """Test filter games by date"""
@@ -222,9 +222,9 @@ class GameApiTests(TestCase):
         serializer1 = GameSerializer(game1)
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_return_game_from_similar_games(self):
         """Test returning game by igdb_id in similar games"""
@@ -244,9 +244,9 @@ class GameApiTests(TestCase):
         serializer2 = GameSerializer(game2)
         serializer3 = GameSerializer(game3)
 
-        self.assertIn(serializer2.data, res.data)
-        self.assertIn(serializer3.data, res.data)
-        self.assertNotIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertIn(serializer3.data, res.data['results'])
+        self.assertNotIn(serializer1.data, res.data['results'])
 
     def test_saved_only_for_authenticated_users(self):
         """Test that authentication is required for saved"""
@@ -302,9 +302,9 @@ class PrivateGameApiTests(TestCase):
         serializer3 = GameSerializer(game3)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertNotIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertIn(serializer3.data, res.data)
+        self.assertNotIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertIn(serializer3.data, res.data['results'])
 
     def test_add_to_saved(self):
         """Test the game is added to the saved"""
@@ -319,7 +319,7 @@ class PrivateGameApiTests(TestCase):
         serializer = GameSerializer(game)
 
         self.assertEqual(res1.status_code, status.HTTP_200_OK)
-        self.assertTrue(serializer.data, res2.data)
+        self.assertIn(serializer.data, res2.data['results'])
 
     def test_remove_from_saved(self):
         """Test the game is removed from the saved"""
@@ -335,4 +335,4 @@ class PrivateGameApiTests(TestCase):
         serializer = GameSerializer(game)
 
         self.assertEqual(res1.status_code, status.HTTP_200_OK)
-        self.assertNotIn(serializer.data, res2.data)
+        self.assertNotIn(serializer.data, res2.data['results'])

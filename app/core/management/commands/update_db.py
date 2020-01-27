@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         games = 0
         while True:
-            response_dict = get_data_from_api(100, games)
+            response_dict = get_data_from_api('asc', 100, games)
             if not response_dict:
                 self.stdout.write("Database is updated.")
                 break
