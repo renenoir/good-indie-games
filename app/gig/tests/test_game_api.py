@@ -227,17 +227,17 @@ class GameApiTests(TestCase):
         self.assertNotIn(serializer3.data, res.data['results'])
 
     def test_return_game_from_similar_games(self):
-        """Test returning game by igdb_id in similar games"""
+        """Test returning game by id in similar games"""
         game1 = sample_game(similar_games=[2, 3])
-        game2 = sample_game(igdb_id=2, name='Terraria')
-        game3 = sample_game(igdb_id=3, name='Fez')
+        game2 = sample_game(id=2, name='Terraria')
+        game3 = sample_game(id=3, name='Fez')
 
         similar_games = ","
         similar_games = similar_games.join(str(x) for x in game1.similar_games)
 
         res = self.client.get(
             GAMES_URL,
-            {'igdb_ids': similar_games}
+            {'ids': similar_games}
         )
 
         serializer1 = GameSerializer(game1)
