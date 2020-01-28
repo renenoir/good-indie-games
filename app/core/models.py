@@ -104,12 +104,13 @@ class Game(models.Model):
     publishers = models.ManyToManyField('Publisher')
 
     def similar_games_in_db(self):
-        igdb_ids = list(map(lambda game: game.igdb_id, Game.objects.all()))
+        games = Game.objects.all()
+        igdb_ids = list(map(lambda game: game.igdb_id, games))
         similar_games = []
         if self.similar_games:
             for game in self.similar_games:
                 if int(game) in igdb_ids:
-                    similar_games.append(game)
+                    similar_games.append(games.get(igdb_id=int(game)).id)
         return similar_games
 
     def __str__(self):
