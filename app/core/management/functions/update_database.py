@@ -23,6 +23,7 @@ def update_database(response_dict):
         name = game_item.get('name')
         summary = game_item.get('summary') or ''
         rating = int(game_item.get('total_rating'))
+        popularity = game_item.get('popularity')
         first_release_date = game_item.get('first_release_date') if (
             isinstance(game_item.get('first_release_date'), int)
         ) else False
@@ -82,6 +83,7 @@ def update_database(response_dict):
             name=name,
             summary=summary,
             rating=rating,
+            popularity=popularity,
             first_release_date=datetime.datetime.fromtimestamp(
                 first_release_date
             ),

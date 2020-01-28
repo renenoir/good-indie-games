@@ -57,7 +57,7 @@ class PublisherViewSet(BaseGameAttrViewSet):
 
 class GameViewSet(viewsets.ModelViewSet):
     """View games in the database"""
-    queryset = Game.objects.all()
+    queryset = Game.objects.all().order_by('-popularity')
     serializer_class = serializers.GameSerializer
     authentication_classes = (TokenAuthentication,)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
