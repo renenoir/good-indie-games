@@ -226,6 +226,40 @@ class GameApiTests(TestCase):
         self.assertIn(serializer2.data, res.data['results'])
         self.assertNotIn(serializer3.data, res.data['results'])
 
+    def test_filter_games_by_rating(self):
+        """Test filter games by rating"""
+        game1 = sample_game(rating=60)
+        game2 = sample_game(rating=70)
+        game3 = sample_game(rating=80)
+
+        res = self.client.get(
+            GAMES_URL,
+            {'rating__gte': '70'}
+        )
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
+        serializer3 = GameSerializer(game3)
+        self.assertNotIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertIn(serializer3.data, res.data['results'])
+
+    def test_search_games_by_name(self):
+        """Test search games by name"""
+        game1 = sample_game(name='The Path')
+        game2 = sample_game(name='Path of Exile')
+        game3 = sample_game()
+
+        res = self.client.get(
+            GAMES_URL,
+            {'search': 'path'}
+        )
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
+        serializer3 = GameSerializer(game3)
+        self.assertIn(serializer1.data, res.data['results'])
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer3.data, res.data['results'])
+
     def test_return_game_from_similar_games(self):
         """Test returning game by id in similar games"""
         game1 = sample_game(similar_games=[2, 3])

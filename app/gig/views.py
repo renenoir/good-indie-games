@@ -3,6 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from core.models import Genre, Theme, Platform, Developer, Publisher, Game, \
                                                                       User
@@ -58,9 +60,12 @@ class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = serializers.GameSerializer
     authentication_classes = (TokenAuthentication,)
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = {
-       'first_release_date': ['exact', 'lte', 'gte']
+       'first_release_date': ['exact', 'lte', 'gte'],
+       'rating': ['exact', 'lte', 'gte']
     }
+    search_fields = ['name']
 
     def _params_to_ints(self, qs):
         """Convert a list of string IDs to a list of integers"""
@@ -145,9 +150,6 @@ class SavedViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.GameSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    filterset_fields = {
-       'first_release_date': ['exact', 'lte', 'gte']
-    }
 
     def get_queryset(self):
         """Retrieve saved games"""
