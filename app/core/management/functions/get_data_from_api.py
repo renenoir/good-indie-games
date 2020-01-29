@@ -11,7 +11,7 @@ def get_data_from_api(order, limit, offset):
             platforms.name, involved_companies.company.name, \
             involved_companies.developer, cover.url, popularity, \
             genres.name, themes.name, total_rating, first_release_date; \
-            where total_rating > 65 & total_rating_count > 10 & \
+            where total_rating > 65 & total_rating_count >= 8 & \
             genres = (32); sort created_at ' + f"{order}" + '; \
             offset ' + f"{offset}" + '; limit ' + f"{limit}" + ';'
 

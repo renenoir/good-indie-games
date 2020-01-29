@@ -57,15 +57,17 @@ class PublisherViewSet(BaseGameAttrViewSet):
 
 class GameViewSet(viewsets.ModelViewSet):
     """View games in the database"""
-    queryset = Game.objects.all().order_by('-popularity')
+    queryset = Game.objects.order_by('-rating', '-popularity')
     serializer_class = serializers.GameSerializer
     authentication_classes = (TokenAuthentication,)
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter,
+                       filters.OrderingFilter]
     filterset_fields = {
        'first_release_date': ['exact', 'lte', 'gte'],
        'rating': ['exact', 'lte', 'gte']
     }
     search_fields = ['name']
+    ordering_fields = ['rating', 'popularity', 'first_release_date']
 
     def _params_to_ints(self, qs):
         """Convert a list of string IDs to a list of integers"""
