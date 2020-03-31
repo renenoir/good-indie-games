@@ -50,40 +50,29 @@ class PublisherSerializer(serializers.ModelSerializer):
 
 class GameSerializer(serializers.ModelSerializer):
     """Serialize a game"""
-    genres = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Genre.objects.all()
-    )
-    themes = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Theme.objects.all()
-    )
-    platforms = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Platform.objects.all()
-    )
-    developers = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Developer.objects.all()
-    )
-    publishers = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Publisher.objects.all()
-    )
+    genres = GenreSerializer(many=True, read_only=True)
+    themes = ThemeSerializer(many=True, read_only=True)
+    platforms = PlatformSerializer(many=True, read_only=True)
 
     class Meta:
         model = Game
-        fields = ('id', 'igdb_id', 'name', 'summary', 'rating',
-                  'first_release_date', 'websites', 'similar_games_in_db',
-                  'cover', 'genres', 'themes', 'platforms', 'developers',
-                  'publishers')
+        fields = ('id', 'name', 'rating', 'first_release_date',
+                  'cover', 'genres', 'themes', 'platforms')
         read_only_fields = ('id',)
 
 
 class GameDetailSerializer(GameSerializer):
     """Serialize a game detail"""
-    genres = GenreSerializer(many=True, read_only=True)
-    themes = ThemeSerializer(many=True, read_only=True)
-    platforms = PlatformSerializer(many=True, read_only=True)
     developers = DeveloperSerializer(many=True, read_only=True)
     publishers = PublisherSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Game
+        fields = GameSerializer.Meta.fields + (
+            'summary',
+            'developers',
+            'publishers',
+            'websites',
+            'similar_games_in_db',
+        )
+        read_only_fields = ('id',)
