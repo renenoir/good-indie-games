@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
+
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from core.models import Genre, Theme, Platform, Developer, Publisher, Game, \
                                                                       User
@@ -23,6 +26,10 @@ class BaseGameAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
             queryset = queryset.filter(game__isnull=False)
 
         return queryset.order_by('-name')
+
+    @method_decorator(cache_page(60))
+    def dispatch(self, *args, **kwargs):
+        return super(BaseGameAttrViewSet, self).dispatch(*args, **kwargs)
 
 
 class GenreViewSet(BaseGameAttrViewSet):
@@ -144,6 +151,10 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_200_OK
             )
+
+    @method_decorator(cache_page(60))
+    def dispatch(self, *args, **kwargs):
+        return super(GameViewSet, self).dispatch(*args, **kwargs)
 
 
 class SavedViewSet(viewsets.ModelViewSet):

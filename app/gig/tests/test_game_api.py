@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -71,6 +72,7 @@ class GameApiTests(TestCase):
         game1 = sample_game()
         game2 = sample_game(name='Bioshock')
 
+        cache.clear()
         res = self.client.get(GAMES_URL)
 
         serializer1 = GameSerializer(game1)

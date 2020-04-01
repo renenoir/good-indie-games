@@ -19,8 +19,8 @@ services:
       - DB_NAME=app
       - DB_USER=postgres
       - DB_PASS=${DB_PASS}
-    links:
-      - db:db
+    depends_on:
+      - db
 
   db:
     image: postgres:10-alpine
