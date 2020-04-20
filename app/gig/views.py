@@ -73,7 +73,7 @@ class GameViewSet(viewsets.ModelViewSet):
        'first_release_date': ['exact', 'lte', 'gte'],
        'rating': ['exact', 'lte', 'gte']
     }
-    search_fields = ['name']
+    search_fields = ['name', 'genres__name', 'themes__name']
     ordering_fields = ['rating', 'popularity', 'first_release_date']
 
     def _params_to_ints(self, qs):
