@@ -6,7 +6,7 @@ import Layout from "./layout/Layout";
 import Loader from "./common/Loader";
 import ErrorBoundary from "./ErrorBoundary";
 
-const Catalog = lazy(() => import("./games/Catalog"));
+const Catalog = lazy(() => import("./catalog/Catalog"));
 
 function App() {
   const [query, setQuery] = useState("");
