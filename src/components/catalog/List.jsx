@@ -1,15 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Loader from "../common/Loader";
 import Rating from "../common/Rating";
 import { format } from "date-fns";
-import { GRAY } from "../../styles/constants";
 
-function List({ games, loading }) {
-  if (loading) {
-    return <CustomLoader />;
-  }
-
+function List({ games }) {
   return (
     <Wrapper>
       {games.map(
@@ -43,10 +37,6 @@ function List({ games, loading }) {
     </Wrapper>
   );
 }
-
-const CustomLoader = styled(Loader)`
-  flex-grow: 1;
-`;
 
 const Wrapper = styled.ul`
   display: grid;

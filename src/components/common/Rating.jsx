@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { PRIMARY } from "../../styles/constants";
 
+const OFFSET = 107;
+
 function Rating({ value }) {
-  const [offset, setOffset] = useState(106);
+  const [offset, setOffset] = useState(OFFSET);
 
   useEffect(() => {
-    setInterval(() => {
-      setOffset(106 - (+value / 100) * 106);
+    const timer = setTimeout(() => {
+      setOffset(OFFSET - (+value / 100) * OFFSET);
     }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [value]);
 
   return (
@@ -31,6 +36,7 @@ function Rating({ value }) {
           strokeLinecap="round"
           strokeWidth="3"
           style={{
+            strokeDasharray: `${OFFSET}px`,
             strokeDashoffset: `-${offset}px`,
           }}
         />
@@ -51,7 +57,6 @@ const Svg = styled.svg`
   transform: rotate(-90deg);
 
   circle {
-    stroke-dasharray: 106px;
     transition: stroke-dashoffset 750ms ease-out;
   }
 `;
