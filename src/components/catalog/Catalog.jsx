@@ -15,7 +15,9 @@ function Catalog({ query }) {
       setLoading(true);
     }, 200);
 
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/games/?search=${query}`)
+    fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/games/?search=${debouncedQuery}`
+    )
       .then((res) => res.json())
       .then(({ results }) => {
         setData(results);
