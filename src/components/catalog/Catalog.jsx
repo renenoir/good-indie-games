@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
+import { stringify } from "query-string";
 
 import useDebounce from "../../utils/hooks/useDebounce";
 import getUndef from "../../utils/getUndef";
@@ -17,10 +18,18 @@ function Catalog({ query }) {
 
   function fetchGames(page, clear) {
     setLoading(true);
+
+    const query = {
+      limit: 20,
+      offset: 20 * page,
+    };
+
+    if (debouncedQuery) {
+      query.search = debouncedQuery;
+    }
+
     return fetch(
-      `${
-        process.env.REACT_APP_API_ENDPOINT
-      }/games/?search=${debouncedQuery}&limit=20&offset=${20 * page}`
+      `${process.env.REACT_APP_API_ENDPOINT}/games/?${stringify(query)}`
     )
       .then((res) => res.json())
       .then(({ next, results }) => {
