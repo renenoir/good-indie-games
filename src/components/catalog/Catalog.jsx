@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { stringify } from "query-string";
+import { parse, formatISO, startOfYear, endOfYear } from "date-fns";
 
 import useDebounce from "../../utils/hooks/useDebounce";
-import getUndef from "../../utils/getUndef";
 import List from "./List";
 import Loader from "../common/Loader";
+import Filters from "./Filters";
 
 function Catalog({ query }) {
+  const [dateGte, setDateGte] = useState("");
+  const [dateLte, setDateLte] = useState("");
   const [next, setNext] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [prevQuery, setPrevQuery] = useState(query || "");
 
   const debouncedQuery = useDebounce(query, 250);
 
@@ -26,6 +28,18 @@ function Catalog({ query }) {
 
     if (debouncedQuery) {
       query.search = debouncedQuery;
+    }
+
+    if (dateGte && dateGte.length === 4) {
+      query.first_release_date__gte = formatISO(
+        startOfYear(parse(dateGte, "yyyy", new Date()))
+      );
+    }
+
+    if (dateLte && dateLte.length === 4) {
+      query.first_release_date__lte = formatISO(
+        endOfYear(parse(dateLte, "yyyy", new Date()))
+      );
     }
 
     return fetch(
@@ -44,15 +58,17 @@ function Catalog({ query }) {
   }
 
   useEffect(() => {
-    if (debouncedQuery === prevQuery) {
-      return;
-    }
-    setPrevQuery(debouncedQuery);
     fetchGames(0, true);
-  }, [debouncedQuery]);
+  }, [debouncedQuery, dateGte, dateLte]);
 
   return (
     <Wrapper>
+      <Filters
+        dateGte={dateGte}
+        setDateGte={setDateGte}
+        dateLte={dateLte}
+        setDateLte={setDateLte}
+      />
       <InfiniteScroll
         pageStart={-1}
         loadMore={fetchGames}

@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import TextField from "@atlaskit/textfield";
+
 function Search({ query, setQuery }) {
   return (
     <Form action="">
@@ -21,13 +23,8 @@ const Form = styled.form`
   padding: 0 30px;
 `;
 
-const Input = styled.input`
-  display: block;
-  width: 100%;
+const Input = styled(TextField)`
   height: 42px;
-  padding: 0 1rem;
-  border-radius: 5px;
-  border: 1px solid var(--color-gray);
   font-size: 1.125rem;
 `;
 
