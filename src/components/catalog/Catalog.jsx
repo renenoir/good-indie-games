@@ -12,6 +12,7 @@ import Filters from "./Filters";
 function Catalog({ query }) {
   const [dateGte, setDateGte] = useState("");
   const [dateLte, setDateLte] = useState("");
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [next, setNext] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,18 +31,21 @@ function Catalog({ query }) {
       query.search = debouncedQuery;
     }
 
-    if (dateGte && dateGte.length === 4) {
+    if (dateGte.length === 4) {
       query.first_release_date__gte = formatISO(
         startOfYear(parse(dateGte, "yyyy", new Date()))
       );
     }
 
-    if (dateLte && dateLte.length === 4) {
+    if (dateLte.length === 4) {
       query.first_release_date__lte = formatISO(
         endOfYear(parse(dateLte, "yyyy", new Date()))
       );
     }
 
+    if (selectedGenres && selectedGenres.length) {
+      query.genres = selectedGenres.map(({ value }) => value);
+    }
     return fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/games/?${stringify(query)}`
     )
@@ -59,7 +63,7 @@ function Catalog({ query }) {
 
   useEffect(() => {
     fetchGames(0, true);
-  }, [debouncedQuery, dateGte, dateLte]);
+  }, [debouncedQuery, dateGte, dateLte, selectedGenres]);
 
   return (
     <Wrapper>
@@ -68,6 +72,8 @@ function Catalog({ query }) {
         setDateGte={setDateGte}
         dateLte={dateLte}
         setDateLte={setDateLte}
+        selectedGenres={selectedGenres}
+        setSelectedGenres={setSelectedGenres}
       />
       <InfiniteScroll
         pageStart={-1}
