@@ -13,6 +13,8 @@ function Catalog({ query }) {
   const [dateGte, setDateGte] = useState("");
   const [dateLte, setDateLte] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedThemes, setSelectedThemes] = useState([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [next, setNext] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,6 +48,15 @@ function Catalog({ query }) {
     if (selectedGenres && selectedGenres.length) {
       query.genres = selectedGenres.map(({ value }) => value);
     }
+
+    if (selectedThemes && selectedThemes.length) {
+      query.themes = selectedThemes.map(({ value }) => value);
+    }
+
+    if (selectedPlatforms && selectedPlatforms.length) {
+      query.platforms = selectedPlatforms.map(({ value }) => value);
+    }
+
     return fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/games/?${stringify(query)}`
     )
@@ -63,7 +74,14 @@ function Catalog({ query }) {
 
   useEffect(() => {
     fetchGames(0, true);
-  }, [debouncedQuery, dateGte, dateLte, selectedGenres]);
+  }, [
+    debouncedQuery,
+    dateGte,
+    dateLte,
+    selectedGenres,
+    selectedThemes,
+    selectedPlatforms,
+  ]);
 
   return (
     <Wrapper>
@@ -74,6 +92,10 @@ function Catalog({ query }) {
         setDateLte={setDateLte}
         selectedGenres={selectedGenres}
         setSelectedGenres={setSelectedGenres}
+        selectedThemes={selectedThemes}
+        setSelectedThemes={setSelectedThemes}
+        selectedPlatforms={selectedPlatforms}
+        setSelectedPlatforms={setSelectedPlatforms}
       />
       <InfiniteScroll
         pageStart={-1}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TextField from "@atlaskit/textfield";
 import { CheckboxSelect } from "@atlaskit/select";
+import useFetchFilter from "../hooks/useFetchFilter";
 
 function Filters({
   dateGte,
@@ -10,23 +11,14 @@ function Filters({
   setDateLte,
   selectedGenres,
   setSelectedGenres,
+  selectedThemes,
+  setSelectedThemes,
+  selectedPlatforms,
+  setSelectedPlatforms,
 }) {
-  const [genres, setGenres] = useState([]);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/genres/`)
-      .then((res) => res.json())
-      .then(({ results }) => {
-        if (results) {
-          setGenres(
-            results.map(({ id, name }) => ({ label: name, value: id }))
-          );
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  const genres = useFetchFilter("genres");
+  const themes = useFetchFilter("themes");
+  const platforms = useFetchFilter("platforms");
 
   return (
     <Wrapper method="POST">
@@ -60,6 +52,26 @@ function Filters({
           options={genres}
           value={selectedGenres}
           onChange={setSelectedGenres}
+        />
+      </FieldWrap>
+      <FieldWrap>
+        <Label htmlFor="themes">Themes</Label>
+        <CheckboxSelect
+          id="themes"
+          name="themes"
+          options={themes}
+          value={selectedThemes}
+          onChange={setSelectedThemes}
+        />
+      </FieldWrap>
+      <FieldWrap>
+        <Label htmlFor="platforms">Platforms</Label>
+        <CheckboxSelect
+          id="platforms"
+          name="platforms"
+          options={platforms}
+          value={selectedPlatforms}
+          onChange={setSelectedPlatforms}
         />
       </FieldWrap>
     </Wrapper>
