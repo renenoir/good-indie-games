@@ -43,7 +43,7 @@ const Wrapper = styled.ul`
   grid-template-columns: repeat(2, 1fr);
   width: calc(100% + 20px);
   padding: 0;
-  margin: 20px -10px;
+  margin: -10px;
   list-style: none;
 `;
 
