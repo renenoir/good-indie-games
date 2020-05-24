@@ -117,7 +117,7 @@ const ModalStyles = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  padding: 1rem 0 1.25rem;
+  padding: 1rem 0;
 `;
 
 const Form = styled.form`
