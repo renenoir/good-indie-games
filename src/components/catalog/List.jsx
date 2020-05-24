@@ -45,6 +45,10 @@ const Wrapper = styled.ul`
   padding: 0;
   margin: -10px;
   list-style: none;
+
+  @media (max-width: 60rem) {
+    display: block;
+  }
 `;
 
 const Item = styled.li`
