@@ -13,7 +13,7 @@ const Header = ({ className, query, setQuery }) => {
         <Logo to="/">GIG</Logo>
         <Search query={query} setQuery={setQuery} />
         <Nav>
-          <NavLink to="/favorite">Favorite</NavLink>
+          <NavLink to="/saved">Saved</NavLink>
           <NavLink to="/login">Login</NavLink>
         </Nav>
       </Row>
