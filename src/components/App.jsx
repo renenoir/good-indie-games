@@ -5,10 +5,12 @@ import GlobalStyles from "../styles/global";
 import Layout from "./layout/Layout";
 import Loader from "./common/Loader";
 import ErrorBoundary from "./ErrorBoundary";
+import useOutline from "./hooks/useOutline";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 
 function App() {
+  useOutline();
   const [query, setQuery] = useState("");
 
   return (

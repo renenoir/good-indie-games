@@ -25,6 +25,15 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html:not(.is-tabbing) {
+    a:focus,
+    button:focus,
+    input:focus,
+    textarea:focus {
+      outline: none
+    }
+  }
+
   *,
   *:before,
   *:after {
