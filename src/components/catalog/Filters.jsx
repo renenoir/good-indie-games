@@ -42,58 +42,61 @@ function Filters({
         {isOpen && (
           <ModalDialog scrollBehavior="outside" onClose={onClose}>
             <Form method="POST">
-              <FieldWrap>
-                <Label htmlFor="year-from">Year from</Label>
-                <TextField
-                  id="year-from"
-                  name="year-from"
-                  placeholder="2000"
-                  maxLength={4}
-                  value={dateGte}
-                  onChange={(e) => setDateGte(e.target.value)}
-                />
-              </FieldWrap>
-              <FieldWrap>
-                <Label htmlFor="year-to">Year to</Label>
-                <TextField
-                  id="year-to"
-                  name="year-to"
-                  placeholder="2020"
-                  maxLength={4}
-                  value={dateLte}
-                  onChange={(e) => setDateLte(e.target.value)}
-                />
-              </FieldWrap>
-              <FieldWrap>
-                <Label htmlFor="genres">Genres</Label>
-                <CheckboxSelect
-                  id="genres"
-                  name="genres"
-                  options={genres}
-                  value={selectedGenres}
-                  onChange={setSelectedGenres}
-                />
-              </FieldWrap>
-              <FieldWrap>
-                <Label htmlFor="themes">Themes</Label>
-                <CheckboxSelect
-                  id="themes"
-                  name="themes"
-                  options={themes}
-                  value={selectedThemes}
-                  onChange={setSelectedThemes}
-                />
-              </FieldWrap>
-              <FieldWrap>
-                <Label htmlFor="platforms">Platforms</Label>
-                <CheckboxSelect
-                  id="platforms"
-                  name="platforms"
-                  options={platforms}
-                  value={selectedPlatforms}
-                  onChange={setSelectedPlatforms}
-                />
-              </FieldWrap>
+              <h1>Filters</h1>
+              <Fields>
+                <FieldWrap>
+                  <Label htmlFor="year-from">Year from</Label>
+                  <TextField
+                    id="year-from"
+                    name="year-from"
+                    placeholder="2000"
+                    maxLength={4}
+                    value={dateGte}
+                    onChange={(e) => setDateGte(e.target.value)}
+                  />
+                </FieldWrap>
+                <FieldWrap>
+                  <Label htmlFor="year-to">Year to</Label>
+                  <TextField
+                    id="year-to"
+                    name="year-to"
+                    placeholder="2020"
+                    maxLength={4}
+                    value={dateLte}
+                    onChange={(e) => setDateLte(e.target.value)}
+                  />
+                </FieldWrap>
+                <FieldWrap>
+                  <Label htmlFor="genres">Genres</Label>
+                  <CheckboxSelect
+                    id="genres"
+                    name="genres"
+                    options={genres}
+                    value={selectedGenres}
+                    onChange={setSelectedGenres}
+                  />
+                </FieldWrap>
+                <FieldWrap>
+                  <Label htmlFor="themes">Themes</Label>
+                  <CheckboxSelect
+                    id="themes"
+                    name="themes"
+                    options={themes}
+                    value={selectedThemes}
+                    onChange={setSelectedThemes}
+                  />
+                </FieldWrap>
+                <FieldWrap>
+                  <Label htmlFor="platforms">Platforms</Label>
+                  <CheckboxSelect
+                    id="platforms"
+                    name="platforms"
+                    options={platforms}
+                    value={selectedPlatforms}
+                    onChange={setSelectedPlatforms}
+                  />
+                </FieldWrap>
+              </Fields>
             </Form>
           </ModalDialog>
         )}
@@ -103,15 +106,18 @@ function Filters({
 }
 
 const Wrapper = styled.div`
-  padding: 1.25rem 0;
+  padding: 1rem 0 1.25rem;
 `;
 
 const Form = styled.form`
+  padding: 0.5rem 0 1.5rem;
+`;
+
+const Fields = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin: 0 -1.25rem -1.25rem 0;
-  padding: 1.5rem 0;
 `;
 
 const FieldWrap = styled.div`
