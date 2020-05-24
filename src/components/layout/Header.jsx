@@ -33,6 +33,10 @@ const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 60rem) {
+    flex-direction: column;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -84,6 +88,10 @@ const NavLink = styled(Link)`
   font-weight: bold;
   :not(:last-child) {
     margin-right: 1em;
+  }
+
+  @media (max-width: 60rem) {
+    margin: 0.5rem 0;
   }
 `;
 

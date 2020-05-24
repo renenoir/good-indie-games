@@ -21,6 +21,11 @@ function Search({ query, setQuery }) {
 const Form = styled.form`
   flex: 1;
   padding: 0 30px;
+
+  @media (max-width: 60rem) {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
 `;
 
 const Input = styled(TextField)`
