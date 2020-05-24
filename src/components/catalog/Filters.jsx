@@ -4,7 +4,6 @@ import TextField from "@atlaskit/textfield";
 import { CheckboxSelect } from "@atlaskit/select";
 import Button from "@atlaskit/button";
 import { Modal } from "react-responsive-modal";
-import "react-responsive-modal/styles.css";
 
 import useFetchFilter from "../hooks/useFetchFilter";
 

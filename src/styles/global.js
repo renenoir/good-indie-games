@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import { SECONDARY, PRIMARY, DARKGRAY, BLACK, GRAY } from "./constants";
 
+import "react-responsive-modal/styles.css";
+
 const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: "ArcadeClassic";

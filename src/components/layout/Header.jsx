@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -6,7 +6,11 @@ import maxWidth from "../../styles/maxWidth";
 import pixelFont from "../../styles/pixelFont";
 import Search from "./Search";
 
+const Login = lazy(() => import("./Login"));
+
 const Header = ({ className, query, setQuery }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Wrapper className={className}>
       <Row>
@@ -14,8 +18,19 @@ const Header = ({ className, query, setQuery }) => {
         <Search query={query} setQuery={setQuery} />
         <Nav>
           <NavLink to="/saved">Saved</NavLink>
-          <NavLink to="/login">Login</NavLink>
+          <NavLink
+            to="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+          >
+            Login
+          </NavLink>
         </Nav>
+        <Suspense fallback={null}>
+          <Login isOpen={isOpen} setIsOpen={setIsOpen} />
+        </Suspense>
       </Row>
     </Wrapper>
   );
