@@ -9,10 +9,12 @@ import "react-responsive-modal/styles.css";
 import useFetchFilter from "../hooks/useFetchFilter";
 
 function Filters({
+  // Dates
   dateGte,
   setDateGte,
   dateLte,
   setDateLte,
+  // Filters
   selectedGenres,
   setSelectedGenres,
   selectedThemes,
@@ -104,8 +106,8 @@ function Filters({
             </FieldWrap>
           </Fields>
         </Form>
+        <ModalStyles />
       </Modal>
-      <ModalStyles />
     </Wrapper>
   );
 }
@@ -116,9 +118,7 @@ const ModalStyles = createGlobalStyle`
   }
 `;
 
-const Wrapper = styled.div`
-  padding: 1rem 0;
-`;
+const Wrapper = styled.div``;
 
 const Form = styled.form`
   padding: 0.5rem 0;

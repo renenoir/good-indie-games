@@ -8,6 +8,22 @@ import useDebounce from "../../utils/hooks/useDebounce";
 import List from "./List";
 import Loader from "../common/Loader";
 import Filters from "./Filters";
+import Sorts from "./Sorts";
+
+const SORTS = [
+  {
+    name: "Popularity",
+    code: "popularity",
+  },
+  {
+    name: "Rating",
+    code: "rating",
+  },
+  {
+    name: "Date",
+    code: "first_release_date",
+  },
+];
 
 function Catalog({ query }) {
   const [dateGte, setDateGte] = useState("");
@@ -15,6 +31,9 @@ function Catalog({ query }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedThemes, setSelectedThemes] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+
+  const [sort, setSort] = useState("-" + SORTS[0].code);
+
   const [next, setNext] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,6 +46,7 @@ function Catalog({ query }) {
     const query = {
       limit: 20,
       offset: 20 * page,
+      ordering: sort,
     };
 
     if (debouncedQuery) {
@@ -81,22 +101,28 @@ function Catalog({ query }) {
     selectedGenres,
     selectedThemes,
     selectedPlatforms,
+    sort,
   ]);
 
   return (
     <Wrapper>
-      <Filters
-        dateGte={dateGte}
-        setDateGte={setDateGte}
-        dateLte={dateLte}
-        setDateLte={setDateLte}
-        selectedGenres={selectedGenres}
-        setSelectedGenres={setSelectedGenres}
-        selectedThemes={selectedThemes}
-        setSelectedThemes={setSelectedThemes}
-        selectedPlatforms={selectedPlatforms}
-        setSelectedPlatforms={setSelectedPlatforms}
-      />
+      <Top>
+        <Filters
+          // Dates
+          dateGte={dateGte}
+          setDateGte={setDateGte}
+          dateLte={dateLte}
+          setDateLte={setDateLte}
+          // Filters
+          selectedGenres={selectedGenres}
+          setSelectedGenres={setSelectedGenres}
+          selectedThemes={selectedThemes}
+          setSelectedThemes={setSelectedThemes}
+          selectedPlatforms={selectedPlatforms}
+          setSelectedPlatforms={setSelectedPlatforms}
+        />
+        <Sorts sorts={SORTS} sort={sort} setSort={setSort} />
+      </Top>
       <InfiniteScroll
         pageStart={-1}
         loadMore={fetchGames}
@@ -114,6 +140,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: relative;
   padding-bottom: 30px;
+`;
+
+const Top = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
 `;
 
 const CustomLoader = styled(Loader)`
