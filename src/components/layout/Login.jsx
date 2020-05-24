@@ -27,8 +27,6 @@ function Login({ isOpen, setIsOpen }) {
     },
   });
 
-  console.log(errors);
-
   return (
     <Modal
       open={isOpen}
