@@ -94,11 +94,12 @@ def update_database(response_dict):
 
         # Create genres, platforms, developers and publishers in db
         for gen in genres:
-            if gen not in gen_names:
-                game.genres.add(Genre.objects.create(name=gen))
-                gen_names.append(gen)
-            else:
-                game.genres.add(Genre.objects.get(name=gen))
+            if gen != 'Indie':
+                if gen not in gen_names:
+                    game.genres.add(Genre.objects.create(name=gen))
+                    gen_names.append(gen)
+                else:
+                    game.genres.add(Genre.objects.get(name=gen))
         for theme in themes:
             if theme not in theme_names:
                 game.themes.add(Theme.objects.create(name=theme))
