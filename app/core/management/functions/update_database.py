@@ -5,6 +5,18 @@ import datetime
 
 def update_database(response_dict):
     """Function for creating game objects and updating the database"""
+    popular_platforms = [
+        'Mac',
+        'Linux',
+        'PC (Microsoft Windows)',
+        'Nintendo Switch',
+        'PlayStation 4',
+        'PlayStation 3',
+        'Xbox One',
+        'Xbox 360',
+        'iOS',
+        'Android'
+        ]
 
     # All genres, themes, platforms, developers and publishers names in the db
     gen_names = list(map(lambda gen: gen.name, Genre.objects.all()))
@@ -107,11 +119,12 @@ def update_database(response_dict):
             else:
                 game.themes.add(Theme.objects.get(name=theme))
         for platf in platforms:
-            if platf not in plat_names:
-                game.platforms.add(Platform.objects.create(name=platf))
-                plat_names.append(platf)
-            else:
-                game.platforms.add(Platform.objects.get(name=platf))
+            if platf in popular_platforms:
+                if platf not in plat_names:
+                    game.platforms.add(Platform.objects.create(name=platf))
+                    plat_names.append(platf)
+                else:
+                    game.platforms.add(Platform.objects.get(name=platf))
         for dev in developers:
             if dev not in dev_names:
                 game.developers.add(Developer.objects.create(name=dev))
