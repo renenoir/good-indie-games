@@ -2,28 +2,16 @@ import React, { useState } from "react";
 import { Modal } from "react-responsive-modal";
 import styled, { createGlobalStyle } from "styled-components";
 import TextField from "@atlaskit/textfield";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useForm } from "react-hook-form";
 import Button from "@atlaskit/button";
 
 function Login({ isOpen, setIsOpen }) {
-  const [isRegister, setIsRegister] = useState(true);
+  const [isLogin, setIsLogin] = useState(true);
+  const { register, handleSubmit, errors } = useForm();
 
-  const loginSchema = Yup.object({
-    email: Yup.string().email().required(),
-    password: Yup.string().min(5).required(),
-    name: isRegister ? Yup.string() : Yup.string().required(),
-  });
-
-  const { values, errors, handleSubmit, handleChange } = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      name: "",
-    },
-    validationSchema: loginSchema,
-    onSubmit: (values) => {},
-  });
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <Modal
@@ -34,17 +22,18 @@ function Login({ isOpen, setIsOpen }) {
         modal: "loginModal",
       }}
     >
-      <Header>{isRegister ? "Login" : "Register"}</Header>
-      <form onSubmit={handleSubmit}>
-        {isRegister || (
+      <Header>{isLogin ? "Login" : "Register"}</Header>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {isLogin || (
           <FieldWrap>
             <label htmlFor="name">Name</label>
             <TextField
               id="name"
               name="name"
+              ref={register({
+                required: true,
+              })}
               isInvalid={!!errors.name}
-              value={values.name}
-              onChange={handleChange}
             />
           </FieldWrap>
         )}
@@ -53,9 +42,11 @@ function Login({ isOpen, setIsOpen }) {
           <TextField
             id="email"
             name="email"
+            ref={register({
+              pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+              required: true,
+            })}
             isInvalid={!!errors.email}
-            value={values.email}
-            onChange={handleChange}
           />
         </FieldWrap>
         <FieldWrap>
@@ -64,21 +55,23 @@ function Login({ isOpen, setIsOpen }) {
             type="password"
             id="password"
             name="password"
+            ref={register({
+              required: true,
+              minLength: 5,
+            })}
             isInvalid={!!errors.password}
-            value={values.password}
-            onChange={handleChange}
           />
         </FieldWrap>
         <Button type="submit" appearance="primary">
-          {isRegister ? "Login" : "Register"}
+          {isLogin ? "Login" : "Register"}
         </Button>
         <Button
           appearance="link"
           onClick={() => {
-            setIsRegister((prev) => !prev);
+            setIsLogin((prev) => !prev);
           }}
         >
-          {isRegister ? "Register" : "Login"}
+          {isLogin ? "Register" : "Login"}
         </Button>
       </form>
       <ModalStyles />
