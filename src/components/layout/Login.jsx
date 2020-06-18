@@ -22,9 +22,7 @@ function Login({ isOpen, setIsOpen }) {
       name: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: (values) => {},
   });
 
   return (
