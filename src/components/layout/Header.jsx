@@ -9,7 +9,7 @@ import Search from "./Search";
 const Login = lazy(() => import("./Login"));
 
 const Header = ({ className, query, setQuery }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <Wrapper className={className}>
@@ -22,14 +22,14 @@ const Header = ({ className, query, setQuery }) => {
             to="#"
             onClick={(e) => {
               e.preventDefault();
-              setIsOpen(true);
+              setOpen(true);
             }}
           >
             Login
           </NavLink>
         </Nav>
         <Suspense fallback={null}>
-          <Login isOpen={isOpen} setIsOpen={setIsOpen} />
+          <Login open={open} setOpen={setOpen} />
         </Suspense>
       </Row>
     </Wrapper>

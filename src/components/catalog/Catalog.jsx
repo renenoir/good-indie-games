@@ -78,7 +78,7 @@ function Catalog({ query }) {
     }
 
     return fetch(
-      `${process.env.REACT_APP_API_ENDPOINT}/games/?${stringify(query)}`
+      `${process.env.REACT_APP_API_ENDPOINT}/gig/games/?${stringify(query)}`
     )
       .then((res) => res.json())
       .then(({ next, results }) => {

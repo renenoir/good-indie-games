@@ -4,7 +4,7 @@ function useFetchFilter(name) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/${name}?limit=100`)
+    fetch(`${process.env.REACT_APP_API_ENDPOINT}/gig/${name}?limit=100`)
       .then((res) => res.json())
       .then(({ results }) => {
         if (results) {

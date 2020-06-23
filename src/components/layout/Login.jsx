@@ -5,18 +5,58 @@ import TextField from "@atlaskit/textfield";
 import { useForm } from "react-hook-form";
 import Button from "@atlaskit/button";
 
-function Login({ isOpen, setIsOpen }) {
+async function makeRequest(method, data) {
+  const url = `${process.env.REACT_APP_API_ENDPOINT}/user/${method}/`;
+  const result = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  return await result.json();
+}
+
+function Login({ open, setOpen }) {
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      if (!isLogin) {
+        const { name } = await makeRequest("create", {
+          email: data.email,
+          name: data.name,
+          password: data.password,
+        });
+
+        if (!name) {
+          throw new Error("Register is failed");
+        }
+      }
+
+      const { token } = await makeRequest("token", {
+        email: data.email,
+        password: data.password,
+      });
+
+      if (!token) {
+        throw new Error("Failed to fetch token");
+      }
+
+      localStorage.setItem("token", token);
+
+      setOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <Modal
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
+      open={open}
+      onClose={() => setOpen(false)}
       center
       classNames={{
         modal: "loginModal",
