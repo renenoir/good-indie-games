@@ -6,6 +6,7 @@ import Layout from "./layout/Layout";
 import Loader from "./common/Loader";
 import ErrorBoundary from "./ErrorBoundary";
 import useOutline from "../hooks/useOutline";
+import { UserProvider } from "../hooks/useUser";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 
@@ -14,20 +15,22 @@ function App() {
   const [query, setQuery] = useState("");
 
   return (
-    <Router>
-      <GlobalStyles />
-      <Layout query={query} setQuery={setQuery}>
-        <ErrorBoundary>
-          <Suspense fallback={<Loader />}>
-            <Switch>
-              <Route exact path="/">
-                <Catalog query={query} />
-              </Route>
-            </Switch>
-          </Suspense>
-        </ErrorBoundary>
-      </Layout>
-    </Router>
+    <ErrorBoundary>
+      <Suspense fallback={<Loader />}>
+        <Router>
+          <GlobalStyles />
+          <UserProvider>
+            <Layout query={query} setQuery={setQuery}>
+              <Switch>
+                <Route exact path="/">
+                  <Catalog query={query} />
+                </Route>
+              </Switch>
+            </Layout>
+          </UserProvider>
+        </Router>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 
