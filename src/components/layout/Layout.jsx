@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Header from "./Header";
-import Footer from "./Footer";
 import maxWidth from "../../styles/maxWidth";
 
 function Layout({ children, query, setQuery }) {
@@ -10,7 +9,6 @@ function Layout({ children, query, setQuery }) {
     <Container>
       <GridHeader query={query} setQuery={setQuery} />
       <Main>{children}</Main>
-      <GridFooter />
     </Container>
   );
 }
@@ -37,10 +35,6 @@ const Main = styled.main`
   > * {
     width: 100%;
   }
-`;
-
-const GridFooter = styled(Footer)`
-  grid-area: footer;
 `;
 
 export default Layout;
