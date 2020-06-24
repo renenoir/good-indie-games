@@ -44,7 +44,13 @@ function Catalog({ query, modifier = "games" }) {
 
   const debouncedQuery = useDebounce(query, 250);
 
-  function fetchGames(page, clear) {
+  function fetchGames(page, clear, token) {
+    if (modifier === "saved" && !token) {
+      setLoading(false);
+      setData([]);
+      return;
+    }
+
     setLoading(true);
 
     const query = {
@@ -108,7 +114,7 @@ function Catalog({ query, modifier = "games" }) {
   }
 
   useEffect(() => {
-    fetchGames(0, true);
+    fetchGames(0, true, token);
   }, [
     debouncedQuery,
     dateGte,
@@ -120,6 +126,10 @@ function Catalog({ query, modifier = "games" }) {
     token,
     modifier,
   ]);
+
+  if (modifier === "saved" && !token) {
+    return null;
+  }
 
   return (
     <Wrapper>
@@ -142,7 +152,7 @@ function Catalog({ query, modifier = "games" }) {
       </Top>
       <InfiniteScroll
         pageStart={-1}
-        loadMore={fetchGames}
+        loadMore={(page) => fetchGames(page, false, token)}
         hasMore={!loading && !!next}
         loader={<CustomLoader key={0} />}
       >
@@ -152,13 +162,13 @@ function Catalog({ query, modifier = "games" }) {
           addFavorite={async (id) => {
             await addFavorite(id);
             if (modifier === "saved") {
-              await fetchGames(0, true);
+              await fetchGames(0, true, token);
             }
           }}
           removeFavorite={async (id) => {
             await removeFavorite(id);
             if (modifier === "saved") {
-              await fetchGames(0, true);
+              await fetchGames(0, true, token);
             }
           }}
           favoritesHashmap={favoritesHashmap}
