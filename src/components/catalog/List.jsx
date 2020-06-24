@@ -119,6 +119,7 @@ const Platforms = styled.p`
 const Themes = styled.p`
   ${smallText};
   color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 0;
 `;
 
 export default List;
