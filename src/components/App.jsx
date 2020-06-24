@@ -5,7 +5,7 @@ import GlobalStyles from "../styles/global";
 import Layout from "./layout/Layout";
 import Loader from "./common/Loader";
 import ErrorBoundary from "./ErrorBoundary";
-import useOutline from "./hooks/useOutline";
+import useOutline from "./useOutline";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 

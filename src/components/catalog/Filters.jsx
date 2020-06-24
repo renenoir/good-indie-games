@@ -5,7 +5,7 @@ import { CheckboxSelect } from "@atlaskit/select";
 import Button from "@atlaskit/button";
 import { Modal } from "react-responsive-modal";
 
-import useFetchFilter from "../hooks/useFetchFilter";
+import useFetchFilter from "./useFetchFilter";
 
 function Filters({
   // Dates
