@@ -5,7 +5,24 @@ import { CheckboxSelect } from "@atlaskit/select";
 import Button from "@atlaskit/button";
 import { Modal } from "react-responsive-modal";
 
-import useFetchFilter from "./useFetchFilter";
+function useFetchFilter(name) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_ENDPOINT}/gig/${name}?limit=100`)
+      .then((res) => res.json())
+      .then(({ results }) => {
+        if (results) {
+          setItems(results.map(({ id, name }) => ({ label: name, value: id })));
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  return items;
+}
 
 function Filters({
   // Dates
