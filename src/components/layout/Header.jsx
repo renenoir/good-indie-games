@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import maxWidth from "../../styles/maxWidth";
 import pixelFont from "../../styles/pixelFont";
 import Search from "./Search";
+import useUser from "../../hooks/useUser";
 
 const Login = lazy(() => import("./Login"));
 
 const Header = ({ className, query, setQuery }) => {
   const [open, setOpen] = useState(false);
+  const { token, setToken } = useUser();
 
   return (
     <Wrapper className={className}>
@@ -17,16 +19,28 @@ const Header = ({ className, query, setQuery }) => {
         <Logo to="/">GIG</Logo>
         <Search query={query} setQuery={setQuery} />
         <Nav>
-          <NavLink to="/saved">Saved</NavLink>
-          <NavLink
-            to="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpen(true);
-            }}
-          >
-            Login
-          </NavLink>
+          {!!token && <NavLink to="/saved">Saved</NavLink>}
+          {!!token ? (
+            <NavLink
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setToken(undefined);
+              }}
+            >
+              Logout
+            </NavLink>
+          ) : (
+            <NavLink
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(true);
+              }}
+            >
+              Login
+            </NavLink>
+          )}
         </Nav>
         <Suspense fallback={null}>
           <Login open={open} setOpen={setOpen} />

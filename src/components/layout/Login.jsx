@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import TextField from "@atlaskit/textfield";
 import { useForm } from "react-hook-form";
 import Button from "@atlaskit/button";
+import useUser from "../../hooks/useUser";
 
 async function makeRequest(method, data) {
   const url = `${process.env.REACT_APP_API_ENDPOINT}/user/${method}/`;
@@ -21,6 +22,7 @@ async function makeRequest(method, data) {
 function Login({ open, setOpen }) {
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, errors } = useForm();
+  const { setToken } = useUser();
 
   const onSubmit = async (data) => {
     try {
@@ -45,8 +47,7 @@ function Login({ open, setOpen }) {
         throw new Error("Failed to fetch token");
       }
 
-      localStorage.setItem("token", token);
-
+      setToken(token);
       setOpen(false);
     } catch (err) {
       console.error(err);
