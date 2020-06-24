@@ -25,6 +25,9 @@ function App() {
                 <Route exact path="/">
                   <Catalog query={query} />
                 </Route>
+                <Route exact path="/saved">
+                  <Catalog query={query} modifier="saved" />
+                </Route>
               </Switch>
             </Layout>
           </UserProvider>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { stringify } from "query-string";
@@ -9,6 +9,8 @@ import List from "./List";
 import Loader from "../common/Loader";
 import Filters from "./Filters";
 import Sorts from "./Sorts";
+import useUser from "../../hooks/useUser";
+import useFavorites from "../../hooks/useFavorites";
 
 const SORTS = [
   {
@@ -25,12 +27,14 @@ const SORTS = [
   },
 ];
 
-function Catalog({ query }) {
+function Catalog({ query, modifier = "games" }) {
   const [dateGte, setDateGte] = useState("");
   const [dateLte, setDateLte] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedThemes, setSelectedThemes] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const { token } = useUser();
+  const { favoritesHashmap, addFavorite, removeFavorite } = useFavorites();
 
   const [sort, setSort] = useState("-" + SORTS[0].code);
 
@@ -77,8 +81,19 @@ function Catalog({ query }) {
       query.platforms = selectedPlatforms.map(({ value }) => value);
     }
 
+    const headers = {};
+
+    if (token) {
+      headers.Authorization = `Token ${token}`;
+    }
+
     return fetch(
-      `${process.env.REACT_APP_API_ENDPOINT}/gig/games/?${stringify(query)}`
+      `${process.env.REACT_APP_API_ENDPOINT}/gig/${modifier}/?${stringify(
+        query
+      )}`,
+      {
+        headers,
+      }
     )
       .then((res) => res.json())
       .then(({ next, results }) => {
@@ -102,6 +117,8 @@ function Catalog({ query }) {
     selectedThemes,
     selectedPlatforms,
     sort,
+    token,
+    modifier,
   ]);
 
   return (
@@ -129,7 +146,23 @@ function Catalog({ query }) {
         hasMore={!loading && !!next}
         loader={<CustomLoader key={0} />}
       >
-        <List games={data} />
+        <List
+          games={data}
+          loading={loading}
+          addFavorite={async (id) => {
+            await addFavorite(id);
+            if (modifier === "saved") {
+              await fetchGames(0, true);
+            }
+          }}
+          removeFavorite={async (id) => {
+            await removeFavorite(id);
+            if (modifier === "saved") {
+              await fetchGames(0, true);
+            }
+          }}
+          favoritesHashmap={favoritesHashmap}
+        />
       </InfiniteScroll>
     </Wrapper>
   );
@@ -157,4 +190,4 @@ const CustomLoader = styled(Loader)`
   height: 30px;
 `;
 
-export default Catalog;
+export default memo(Catalog);

@@ -48,7 +48,9 @@ function Rating({ value }) {
 
 const Wrapper = styled.span`
   position: relative;
-  display: inline-block;
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
 `;
 
 const Svg = styled.svg`
