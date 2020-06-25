@@ -2,10 +2,7 @@ from core.models import Genre, Theme, Platform, Developer, Publisher, Game
 
 import datetime
 
-
-def update_database(response_dict):
-    """Function for creating game objects and updating the database"""
-    popular_platforms = [
+popular_platforms = [
         'Mac',
         'Linux',
         'PC (Microsoft Windows)',
@@ -16,7 +13,71 @@ def update_database(response_dict):
         'Xbox 360',
         'iOS',
         'Android'
-        ]
+]
+
+
+def update_game(game_item):
+    """Function for updating game in the database"""
+    game = Game.objects.get(igdb_id=game_item.get('id'))
+    summary = game_item.get('summary') or ''
+    game.summary = summary
+    rating = int(game_item.get('total_rating'))
+    game.rating = rating
+    popularity = game_item.get('popularity')
+    game.popularity = popularity
+
+    cover_item = game_item.get('cover')
+    cover = cover_item.get('url') if (
+        isinstance(cover_item, dict)
+        and isinstance(cover_item.get('url'), str)
+    ) else ""
+    game.cover = cover
+
+    websites_list = game_item.get('websites')
+    websites = list(
+        map(lambda website: website.get('url'), websites_list)
+    ) if isinstance(websites_list, list) else []
+    game.websites = websites
+
+    game_platforms = list(map(lambda plat: plat.name, game.platforms.all()))
+    plat_names = list(map(lambda plat: plat.name, Platform.objects.all()))
+    platforms_list = game_item.get('platforms')
+    platforms = list(
+        map(lambda platform: platform.get('name'), platforms_list)
+    ) if isinstance(platforms_list, list) else []
+    for platf in platforms:
+        if platf in popular_platforms:
+            if platf not in plat_names and platf not in game_platforms:
+                game.platforms.add(Platform.objects.create(name=platf))
+                plat_names.append(platf)
+            else:
+                game.platforms.add(Platform.objects.get(name=platf))
+
+    game_publishers = list(map(lambda pub: pub.name, game.publishers.all()))
+    pub_names = list(map(lambda pub: pub.name, Publisher.objects.all()))
+    publishers = []
+    involved_companies = game_item.get('involved_companies')
+    if isinstance(involved_companies, list):
+        for company_item in involved_companies:
+            company = company_item.get('company') if (
+                isinstance(company_item, dict)
+            ) else False
+            if not company:
+                continue
+            if not company_item.get('developer'):
+                publishers.append(company.get("name"))
+    for pub in publishers:
+        if pub not in pub_names and pub not in game_publishers:
+            game.publishers.add(Publisher.objects.create(name=pub))
+            pub_names.append(pub)
+        else:
+            game.publishers.add(Publisher.objects.get(name=pub))
+
+    game.save()
+
+
+def update_database(response_dict):
+    """Function for creating game objects and updating the database"""
 
     # All genres, themes, platforms, developers and publishers names in the db
     gen_names = list(map(lambda gen: gen.name, Genre.objects.all()))
@@ -31,6 +92,7 @@ def update_database(response_dict):
     for game_item in response_dict:
         igdb_id = game_item.get('id')
         if igdb_id in ids:
+            update_game(game_item)
             continue
         name = game_item.get('name')
         summary = game_item.get('summary') or ''

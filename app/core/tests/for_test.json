@@ -93,28 +93,12 @@
         "name": "iOS"
       },
       {
-        "id": 41,
-        "name": "Wii U"
-      },
-      {
-        "id": 45,
-        "name": "PlayStation Network"
-      },
-      {
-        "id": 46,
-        "name": "PlayStation Vita"
-      },
-      {
         "id": 48,
         "name": "PlayStation 4"
       },
       {
         "id": 49,
         "name": "Xbox One"
-      },
-      {
-        "id": 74,
-        "name": "Windows Phone"
       },
       {
         "id": 130,
@@ -183,6 +167,7 @@
       }
     ],
     "total_rating": 83.49658831766985,
+    "popularity": 168,
     "websites": [
       {
         "id": 16562,
