@@ -100,6 +100,7 @@ class FunctionsForUpdateDBTests(TestCase):
                 response_dict[0]['platforms']
             ))
         )
+
         publishers = []
         involved_companies = response_dict[0]['involved_companies']
         for company_item in involved_companies:
@@ -112,4 +113,12 @@ class FunctionsForUpdateDBTests(TestCase):
                 res.data['publishers']
             )),
             publishers
+        )
+
+        self.assertEqual(
+            game.similar_games,
+            list(map(
+                lambda similar_game: str(similar_game['id']),
+                response_dict[0]['similar_games']
+            ))
         )

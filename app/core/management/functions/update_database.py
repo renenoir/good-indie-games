@@ -19,25 +19,28 @@ popular_platforms = [
 def update_game(game_item):
     """Function for updating game in the database"""
     game = Game.objects.get(igdb_id=game_item.get('id'))
-    summary = game_item.get('summary') or ''
-    game.summary = summary
-    rating = int(game_item.get('total_rating'))
-    game.rating = rating
-    popularity = game_item.get('popularity')
-    game.popularity = popularity
+    game.summary = game_item.get('summary') or ''
+    game.rating = int(game_item.get('total_rating'))
+    game.popularity = game_item.get('popularity')
 
     cover_item = game_item.get('cover')
-    cover = cover_item.get('url') if (
+    game.cover = cover_item.get('url') if (
         isinstance(cover_item, dict)
         and isinstance(cover_item.get('url'), str)
     ) else ""
-    game.cover = cover
 
     websites_list = game_item.get('websites')
-    websites = list(
+    game.websites = list(
         map(lambda website: website.get('url'), websites_list)
     ) if isinstance(websites_list, list) else []
-    game.websites = websites
+
+    similar_games_list = game_item.get('similar_games')
+    game.similar_games = list(map(
+        lambda similar_game: (similar_game.get('id') if isinstance(
+            similar_game, dict
+        ) else False),
+        similar_games_list
+    )) if isinstance(similar_games_list, list) else []
 
     game_platforms = list(map(lambda plat: plat.name, game.platforms.all()))
     plat_names = list(map(lambda plat: plat.name, Platform.objects.all()))
@@ -47,10 +50,10 @@ def update_game(game_item):
     ) if isinstance(platforms_list, list) else []
     for platf in platforms:
         if platf in popular_platforms:
-            if platf not in plat_names and platf not in game_platforms:
+            if platf not in plat_names:
                 game.platforms.add(Platform.objects.create(name=platf))
                 plat_names.append(platf)
-            else:
+            elif platf not in game_platforms:
                 game.platforms.add(Platform.objects.get(name=platf))
 
     game_publishers = list(map(lambda pub: pub.name, game.publishers.all()))
@@ -67,10 +70,10 @@ def update_game(game_item):
             if not company_item.get('developer'):
                 publishers.append(company.get("name"))
     for pub in publishers:
-        if pub not in pub_names and pub not in game_publishers:
+        if pub not in pub_names:
             game.publishers.add(Publisher.objects.create(name=pub))
             pub_names.append(pub)
-        else:
+        elif pub not in game_publishers:
             game.publishers.add(Publisher.objects.get(name=pub))
 
     game.save()
