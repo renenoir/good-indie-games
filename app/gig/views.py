@@ -88,6 +88,7 @@ class GameViewSet(viewsets.ModelViewSet):
         developers = self.request.query_params.get('developers')
         publishers = self.request.query_params.get('publishers')
         ids = self.request.query_params.get('ids')
+        adult = self.request.query_params.get('is_adult')
         queryset = self.queryset
 
         if genres:
@@ -108,6 +109,12 @@ class GameViewSet(viewsets.ModelViewSet):
         if ids:
             ids_arr = self._params_to_ints(ids)
             queryset = queryset.filter(id__in=ids_arr)
+
+        if adult != 'y':
+            try:
+                queryset = queryset.exclude(themes__name='Erotic')
+            except Theme.DoesNotExist:
+                None
 
         return queryset.distinct()
 

@@ -372,3 +372,24 @@ class PrivateGameApiTests(TestCase):
 
         self.assertEqual(res1.status_code, status.HTTP_200_OK)
         self.assertNotIn(serializer.data, res2.data['results'])
+
+    def test_check_age(self):
+        """Test check age for showing erotic games"""
+        cache.clear()
+        game1 = sample_game()
+        game1.themes.add(Theme.objects.create(name='Horror'))
+        game1.themes.add(Theme.objects.create(name='Erotic'))
+
+        game2 = sample_game(igdb_id=5, name='Overwatch')
+        game2.themes.add(Theme.objects.create(name='Comedy'))
+
+        res = self.client.get(
+            GAMES_URL,
+            {'is_adult': 'n'}
+        )
+
+        serializer1 = GameSerializer(game1)
+        serializer2 = GameSerializer(game2)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn(serializer2.data, res.data['results'])
+        self.assertNotIn(serializer1.data, res.data['results'])
