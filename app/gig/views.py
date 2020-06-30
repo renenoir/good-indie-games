@@ -62,9 +62,8 @@ class PublisherViewSet(BaseGameAttrViewSet):
     serializer_class = serializers.PublisherSerializer
 
 
-class GameViewSet(viewsets.ModelViewSet):
-    """View games in the database"""
-    queryset = Game.objects.order_by('-rating', '-popularity')
+class BaseGameViewSet(viewsets.ModelViewSet):
+    """Base viewset for game"""
     serializer_class = serializers.GameSerializer
     authentication_classes = (TokenAuthentication,)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter,
@@ -73,7 +72,6 @@ class GameViewSet(viewsets.ModelViewSet):
        'first_release_date': ['exact', 'lte', 'gte'],
        'rating': ['exact', 'lte', 'gte']
     }
-    search_fields = ['name', 'genres__name', 'themes__name']
     ordering_fields = ['rating', 'popularity', 'first_release_date']
 
     def _params_to_ints(self, qs):
@@ -116,7 +114,16 @@ class GameViewSet(viewsets.ModelViewSet):
             except Theme.DoesNotExist:
                 None
 
+        if self.saved:
+            return queryset.filter(user=self.request.user)
         return queryset.distinct()
+
+
+class GameViewSet(BaseGameViewSet):
+    """View games in the database"""
+    saved = False
+    queryset = Game.objects.order_by('-rating', '-popularity')
+    search_fields = ['name', 'genres__name', 'themes__name']
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
@@ -164,15 +171,8 @@ class GameViewSet(viewsets.ModelViewSet):
         return super(GameViewSet, self).dispatch(*args, **kwargs)
 
 
-class SavedViewSet(viewsets.ModelViewSet):
+class SavedViewSet(BaseGameViewSet):
     """View saved in the database"""
+    saved = True
     queryset = Game.objects.all()
-    serializer_class = serializers.GameSerializer
-    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        """Retrieve saved games"""
-        queryset = self.queryset.filter(user=self.request.user)
-
-        return queryset
