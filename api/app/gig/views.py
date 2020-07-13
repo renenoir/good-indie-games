@@ -25,7 +25,7 @@ class BaseGameAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         if assigned_only:
             queryset = queryset.filter(game__isnull=False)
 
-        return queryset.order_by('-name')
+        return queryset.order_by('-name').distinct()
 
     @method_decorator(cache_page(60))
     def dispatch(self, *args, **kwargs):
