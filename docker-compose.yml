@@ -46,7 +46,10 @@ services:
       - dbdata:/var/lib/postgresql/data/
     networks:
       - app-network
-    env_file: .env
+    environment: 
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 volumes:
   dbdata:
 networks:
