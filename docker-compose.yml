@@ -29,7 +29,12 @@ services:
               python manage.py migrate &&
               (python manage.py runserver 0.0.0.0:8000 &
               (watch -n 43200 python manage.py update_db))"
-    env_file: .env
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=${DB_PASS}
+      - SECRET_KEY=${SECRET_KEY}
     networks:
       - app-network
     depends_on:
