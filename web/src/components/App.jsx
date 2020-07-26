@@ -7,6 +7,7 @@ import Loader from "./common/Loader";
 import ErrorBoundary from "./ErrorBoundary";
 import useOutline from "../hooks/useOutline";
 import { UserProvider } from "../hooks/useUser";
+import { LoginOpenProvider } from "../hooks/useLoginOpen";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 
@@ -20,16 +21,18 @@ function App() {
         <Router>
           <GlobalStyles />
           <UserProvider>
-            <Layout query={query} setQuery={setQuery}>
-              <Switch>
-                <Route exact path="/">
-                  <Catalog query={query} />
-                </Route>
-                <Route exact path="/saved">
-                  <Catalog query={query} modifier="saved" />
-                </Route>
-              </Switch>
-            </Layout>
+            <LoginOpenProvider>
+              <Layout query={query} setQuery={setQuery}>
+                <Switch>
+                  <Route exact path="/">
+                    <Catalog query={query} />
+                  </Route>
+                  <Route exact path="/saved">
+                    <Catalog query={query} modifier="saved" />
+                  </Route>
+                </Switch>
+              </Layout>
+            </LoginOpenProvider>
           </UserProvider>
         </Router>
       </Suspense>
