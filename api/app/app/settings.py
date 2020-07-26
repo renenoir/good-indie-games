@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['good-indie-games.xyz']
+ALLOWED_HOSTS = ['localhost', 'good-indie-games.xyz']
 
 
 # Application definition

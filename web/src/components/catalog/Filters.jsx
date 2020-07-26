@@ -121,6 +121,9 @@ function Filters({
               />
             </FieldWrap>
           </Fields>
+          <ApplyButton appearance="primary" onClick={onClose}>
+            Apply
+          </ApplyButton>
         </Form>
         <ModalStyles />
       </Modal>
@@ -166,5 +169,9 @@ const FieldWrap = styled.div`
 `;
 
 const Label = styled.label``;
+
+const ApplyButton = styled(Button)`
+  margin-top: 1.5rem;
+`;
 
 export default Filters;
