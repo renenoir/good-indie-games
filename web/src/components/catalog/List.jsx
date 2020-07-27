@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { GRAY } from "../../styles/constants";
 import useUser from "../../hooks/useUser";
 import useLoginOpen from "../../hooks/useLoginOpen";
+import { Link } from "react-router-dom";
 
 function List({
   games,
@@ -35,9 +36,11 @@ function List({
           const favorite = favoritesHashmap[id] !== undefined;
           return (
             <Item key={id}>
-              <ImageSize>
-                <Image src={cover.replace(/t_thumb/g, "t_cover_big")} />
-              </ImageSize>
+              <CustomLink to={`/${id}`} target="_blank">
+                <ImageSize>
+                  <Image src={cover.replace(/t_thumb/g, "t_cover_big")} />
+                </ImageSize>
+              </CustomLink>
               <Content>
                 <Top>
                   <Rating value={rating} />
@@ -46,7 +49,8 @@ function List({
                   </DateText>
                   <ToggleFavorite
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       if (!token) {
                         setLoginOpen(true);
                         return;
@@ -70,7 +74,9 @@ function List({
                     </Star>
                   </ToggleFavorite>
                 </Top>
-                <Title>{name}</Title>
+                <CustomLink to={`/${id}`}>
+                  <Title>{name}</Title>
+                </CustomLink>
                 <Platforms>
                   {platforms.map(({ name }) => name).join(", ")}
                 </Platforms>
@@ -108,12 +114,21 @@ const Item = styled.li`
   border: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
+const CustomLink = styled(Link)`
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
 const ImageSize = styled.div`
   position: relative;
   flex-shrink: 0;
   width: 150px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: inherit;
+  border-radius: 10px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   overflow: hidden;

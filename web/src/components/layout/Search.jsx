@@ -5,7 +5,12 @@ import TextField from "@atlaskit/textfield";
 
 function Search({ query, setQuery }) {
   return (
-    <Form action="">
+    <Form
+      action=""
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <Input
         type="text"
         value={query}

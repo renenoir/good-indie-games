@@ -8,6 +8,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import useOutline from "../hooks/useOutline";
 import { UserProvider } from "../hooks/useUser";
 import { LoginOpenProvider } from "../hooks/useLoginOpen";
+import Detail from "./catalog/Detail";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 
@@ -29,6 +30,9 @@ function App() {
                   </Route>
                   <Route exact path="/saved">
                     <Catalog query={query} modifier="saved" />
+                  </Route>
+                  <Route path={`/:id`}>
+                    <Detail />
                   </Route>
                 </Switch>
               </Layout>
