@@ -6,11 +6,12 @@ import maxWidth from "../../styles/maxWidth";
 import pixelFont from "../../styles/pixelFont";
 import Search from "./Search";
 import useUser from "../../hooks/useUser";
+import useLoginOpen from "../../hooks/useLoginOpen";
 
 const Login = lazy(() => import("./Login"));
 
 const Header = ({ className, query, setQuery }) => {
-  const [open, setOpen] = useState(false);
+  const { loginOpen, setLoginOpen } = useLoginOpen();
   const { token, setToken } = useUser();
 
   return (
@@ -35,7 +36,7 @@ const Header = ({ className, query, setQuery }) => {
               to="#"
               onClick={(e) => {
                 e.preventDefault();
-                setOpen(true);
+                setLoginOpen(true);
               }}
             >
               Login
@@ -43,7 +44,7 @@ const Header = ({ className, query, setQuery }) => {
           )}
         </Nav>
         <Suspense fallback={null}>
-          <Login open={open} setOpen={setOpen} />
+          <Login open={loginOpen} setOpen={setLoginOpen} />
         </Suspense>
       </Row>
     </Wrapper>

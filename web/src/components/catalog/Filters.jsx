@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import TextField from "@atlaskit/textfield";
 import { CheckboxSelect } from "@atlaskit/select";
-import Button from "@atlaskit/button";
+import Button from "../common/Button";
 import { Modal } from "react-responsive-modal";
 
 function useFetchFilter(name) {
@@ -121,6 +121,9 @@ function Filters({
               />
             </FieldWrap>
           </Fields>
+          <ApplyButton appearance="primary" onClick={onClose}>
+            Apply
+          </ApplyButton>
         </Form>
         <ModalStyles />
       </Modal>
@@ -166,5 +169,9 @@ const FieldWrap = styled.div`
 `;
 
 const Label = styled.label``;
+
+const ApplyButton = styled(Button)`
+  margin-top: 1.5rem;
+`;
 
 export default Filters;
