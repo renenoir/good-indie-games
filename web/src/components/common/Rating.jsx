@@ -37,7 +37,7 @@ function Rating({ value }) {
           strokeWidth="3"
           style={{
             strokeDasharray: `${OFFSET}px`,
-            strokeDashoffset: `-${offset}px`,
+            strokeDashoffset: `${offset}px`,
           }}
         />
       </Svg>
@@ -56,7 +56,7 @@ const Wrapper = styled.span`
 const Svg = styled.svg`
   width: 2.5rem;
   height: 2.5rem;
-  transform: rotate(-90deg);
+  transform: rotate(-90deg) scale(1, -1);
 
   circle {
     transition: stroke-dashoffset 750ms ease-out;
