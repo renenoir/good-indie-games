@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import TextField from "@atlaskit/textfield";
 import { CheckboxSelect } from "@atlaskit/select";
-import Button from "@atlaskit/button";
+import Button from "../common/Button";
 import { Modal } from "react-responsive-modal";
 
 function useFetchFilter(name) {

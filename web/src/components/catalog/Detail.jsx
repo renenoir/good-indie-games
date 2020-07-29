@@ -23,6 +23,7 @@ const Detail = () => {
       first_release_date,
       summary,
       websites,
+      developers,
     },
     setData,
   ] = useState({});
@@ -132,16 +133,23 @@ const Detail = () => {
         <Content>
           <Name>{name}</Name>
           <Summary>{summary}</Summary>
+          <p className="list-header">Developers:</p>
+          <ul>
+            {developers.map(({ id, name }) => (
+              <li key={id}>{name}</li>
+            ))}
+          </ul>
+          <p className="list-header">Links:</p>
           {websites && (
-            <Links>
+            <ul>
               {websites.map((link) => (
                 <li key={link}>
-                  <Link href={link} target="_blank" rel="noreferrer noopener">
+                  <a href={link} target="_blank" rel="noreferrer noopener">
                     {link}
-                  </Link>
+                  </a>
                 </li>
               ))}
-            </Links>
+            </ul>
           )}
         </Content>
       </Row>
@@ -179,6 +187,17 @@ const Aside = styled.aside`
 const Content = styled.div`
   margin-left: 1.75rem;
   flex-grow: 1;
+
+  .list-header {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  ul {
+    margin: 0.5rem 0;
+    padding: 0;
+    list-style: none;
+  }
 `;
 
 const ImageSize = styled.div`
@@ -265,14 +284,6 @@ const Themes = styled.p`
   color: rgba(0, 0, 0, 0.5);
   margin-bottom: 0;
 `;
-
-const Links = styled.ul`
-  list-style: none;
-  margin: 1rem 0;
-  padding: 0;
-`;
-
-const Link = styled.a``;
 
 const SimilarHeader = styled.h2`
   margin-top: 3rem;

@@ -3,7 +3,7 @@ import { Modal } from "react-responsive-modal";
 import styled, { createGlobalStyle } from "styled-components";
 import TextField from "@atlaskit/textfield";
 import { useForm } from "react-hook-form";
-import Button from "@atlaskit/button";
+import Button from "../common/Button";
 import useUser from "../../hooks/useUser";
 
 async function makeRequest(method, data) {

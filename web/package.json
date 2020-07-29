@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "date-fns": "^2.14.0",
     "lodash-es": "^4.17.15",
+    "polished": "^3.6.5",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
