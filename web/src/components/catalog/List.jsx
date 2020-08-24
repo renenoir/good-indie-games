@@ -74,7 +74,7 @@ function List({
                     </Star>
                   </ToggleFavorite>
                 </Top>
-                <CustomLink to={`/${id}`}>
+                <CustomLink to={`/${id}`} target="_blank">
                   <Title>{name}</Title>
                 </CustomLink>
                 <Platforms>
