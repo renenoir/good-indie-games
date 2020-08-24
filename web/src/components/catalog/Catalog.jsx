@@ -14,16 +14,16 @@ import useFavorites from "../../hooks/useFavorites";
 
 const SORTS = [
   {
+    name: "Date",
+    code: "first_release_date",
+  },
+  {
     name: "Popularity",
     code: "popularity",
   },
   {
     name: "Rating",
     code: "rating",
-  },
-  {
-    name: "Date",
-    code: "first_release_date",
   },
 ];
 
