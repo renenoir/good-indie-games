@@ -133,12 +133,14 @@ const Detail = () => {
         <Content>
           <Name>{name}</Name>
           <Summary>{summary}</Summary>
-          <p className="list-header">Developers:</p>
-          <ul>
-            {developers.map(({ id, name }) => (
-              <li key={id}>{name}</li>
-            ))}
-          </ul>
+          {developers.length > 0 && <>
+            <p className="list-header">Developers:</p>
+            <ul>
+              {developers.map(({ id, name }) => (
+                <li key={id}>{name}</li>
+              ))}
+            </ul>
+          </>}
           <p className="list-header">Links:</p>
           {websites && (
             <ul>
