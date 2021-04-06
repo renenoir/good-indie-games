@@ -18,10 +18,6 @@ const SORTS = [
     code: "first_release_date",
   },
   {
-    name: "Popularity",
-    code: "popularity",
-  },
-  {
     name: "Rating",
     code: "rating",
   },

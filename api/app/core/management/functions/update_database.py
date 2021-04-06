@@ -21,7 +21,6 @@ def update_game(game_item):
     game = Game.objects.get(igdb_id=game_item.get('id'))
     game.summary = game_item.get('summary') or ''
     game.rating = int(game_item.get('total_rating'))
-    game.popularity = game_item.get('popularity')
 
     cover_item = game_item.get('cover')
     game.cover = cover_item.get('url') if (
@@ -100,7 +99,6 @@ def update_database(response_dict):
         name = game_item.get('name')
         summary = game_item.get('summary') or ''
         rating = int(game_item.get('total_rating'))
-        popularity = game_item.get('popularity')
         first_release_date = game_item.get('first_release_date') if (
             isinstance(game_item.get('first_release_date'), int)
         ) else False
@@ -160,7 +158,6 @@ def update_database(response_dict):
             name=name,
             summary=summary,
             rating=rating,
-            popularity=popularity,
             first_release_date=datetime.datetime.fromtimestamp(
                 first_release_date
             ),

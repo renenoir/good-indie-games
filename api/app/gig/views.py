@@ -72,7 +72,7 @@ class BaseGameViewSet(viewsets.ModelViewSet):
        'first_release_date': ['exact', 'lte', 'gte'],
        'rating': ['exact', 'lte', 'gte']
     }
-    ordering_fields = ['rating', 'popularity', 'first_release_date']
+    ordering_fields = ['rating', 'first_release_date']
 
     def _params_to_ints(self, qs):
         """Convert a list of string IDs to a list of integers"""
@@ -122,7 +122,7 @@ class BaseGameViewSet(viewsets.ModelViewSet):
 class GameViewSet(BaseGameViewSet):
     """View games in the database"""
     saved = False
-    queryset = Game.objects.order_by('-rating', '-popularity')
+    queryset = Game.objects.order_by('-rating')
     search_fields = ['name', 'genres__name', 'themes__name']
 
     def get_serializer_class(self):

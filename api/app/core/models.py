@@ -87,7 +87,6 @@ class Game(models.Model):
     name = models.CharField(max_length=255)
     summary = models.CharField(max_length=10000)
     rating = models.IntegerField()
-    popularity = models.IntegerField(blank=True, null=True)
     first_release_date = models.DateTimeField(
         auto_now=False,
         auto_now_add=False,
