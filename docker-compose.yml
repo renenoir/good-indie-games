@@ -35,6 +35,7 @@ services:
       - DB_USER=postgres
       - DB_PASS=${DB_PASS}
       - SECRET_KEY=${SECRET_KEY}
+      - CLIENT_ID=${CLIENT_ID}
     networks:
       - app-network
     depends_on:
