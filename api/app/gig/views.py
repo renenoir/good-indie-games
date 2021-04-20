@@ -72,7 +72,7 @@ class BaseGameViewSet(viewsets.ModelViewSet):
        'first_release_date': ['exact', 'lte', 'gte'],
        'rating': ['exact', 'lte', 'gte']
     }
-    ordering_fields = ['rating', 'first_release_date']
+    ordering_fields = ['rating', 'first_release_date', 'popularity']
 
     def _params_to_ints(self, qs):
         """Convert a list of string IDs to a list of integers"""

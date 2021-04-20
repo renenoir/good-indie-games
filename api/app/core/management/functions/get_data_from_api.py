@@ -21,10 +21,10 @@ def get_data_from_api(order, limit, offset):
     }
 
     data = 'fields name, summary, websites.url, similar_games.name, \
-            platforms.name, involved_companies.company.name, \
-            involved_companies.developer, cover.url,  \
-            genres.name, themes.name, total_rating, first_release_date; \
-            where total_rating > 65 & total_rating_count >= 8 & \
+            platforms.name, involved_companies.company.name, cover.url, \
+            involved_companies.developer, genres.name, themes.name,  \
+            total_rating, total_rating_count, first_release_date; \
+            where total_rating > 65 & total_rating_count >= 3 & \
             genres = (32); sort created_at ' + f"{order}" + '; \
             offset ' + f"{offset}" + '; limit ' + f"{limit}" + ';'
 

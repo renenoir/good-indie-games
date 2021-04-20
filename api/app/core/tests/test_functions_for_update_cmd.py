@@ -25,6 +25,7 @@ class FunctionsForUpdateDBTests(TestCase):
             name='Minecraft',
             summary='Some summary',
             rating=85,
+            popularity=20,
             first_release_date=datetime.datetime.fromtimestamp(1317945600),
             websites=["https://www.youtube.com/user/TeamMojang",
                       "https://twitter.com/Minecraft"]
@@ -51,6 +52,7 @@ class FunctionsForUpdateDBTests(TestCase):
             name='Minecraft',
             summary='Some summary',
             rating=90,
+            popularity=20,
             first_release_date=datetime.datetime.fromtimestamp(1317856600),
             websites=[]
         )
@@ -76,6 +78,10 @@ class FunctionsForUpdateDBTests(TestCase):
         self.assertEqual(
             res.data['rating'],
             int(response_dict[0]['total_rating'])
+        )
+        self.assertEqual(
+            res.data['popularity'],
+            int(response_dict[0]['total_rating_count'])
         )
         self.assertEqual(res.data['cover'], response_dict[0]['cover']['url'])
         self.assertEqual(
