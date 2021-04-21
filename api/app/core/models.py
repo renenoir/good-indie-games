@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
 
 from django.utils import timezone
 
+from slugify import slugify
+
 
 class UserManager(BaseUserManager):
 
@@ -118,3 +120,6 @@ class Game(models.Model):
 
     def __str__(self):
         return '{}, {}, {}'.format(self.name, self.summary, self.cover)
+
+    def slug(self):
+        return(slugify(str(self.name)))

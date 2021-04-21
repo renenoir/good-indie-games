@@ -74,5 +74,6 @@ class GameDetailSerializer(GameSerializer):
             'publishers',
             'websites',
             'similar_games_in_db',
+            'slug',
         )
         read_only_fields = ('id',)
