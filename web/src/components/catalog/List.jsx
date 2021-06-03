@@ -36,7 +36,7 @@ function List({
           const favorite = favoritesHashmap[id] !== undefined;
           return (
             <Item key={id}>
-              <CustomLink to={`/${id}`} target="_blank">
+              <CustomLink to={`/${id}`}>
                 <ImageSize>
                   <Image src={cover.replace(/t_thumb/g, "t_cover_big")} />
                 </ImageSize>
@@ -74,7 +74,7 @@ function List({
                     </Star>
                   </ToggleFavorite>
                 </Top>
-                <CustomLink to={`/${id}`} target="_blank">
+                <CustomLink to={`/${id}`}>
                   <Title>{name}</Title>
                 </CustomLink>
                 <Platforms>

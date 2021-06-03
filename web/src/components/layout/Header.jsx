@@ -10,7 +10,7 @@ import useLoginOpen from "../../hooks/useLoginOpen";
 
 const Login = lazy(() => import("./Login"));
 
-const Header = ({ className, query, setQuery }) => {
+const Header = ({ className }) => {
   const { loginOpen, setLoginOpen } = useLoginOpen();
   const { token, setToken } = useUser();
 
@@ -18,7 +18,7 @@ const Header = ({ className, query, setQuery }) => {
     <Wrapper className={className}>
       <Row>
         <Logo to="/">GIG</Logo>
-        <Search query={query} setQuery={setQuery} />
+        <Search />
         <Nav>
           {!!token && <NavLink to="/saved">Saved</NavLink>}
           {!!token ? (
