@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import TextField from "@atlaskit/textfield";
 import { useLocation } from "react-router-dom";
+import { useCatalog } from "../../contexts/catalog";
 
-function Search({ query, setQuery }) {
+function Search() {
+  const { query, setQuery } = useCatalog();
   let location = useLocation();
 
   const disabled = location.pathname !== "/" && location.pathname !== "/saved";
