@@ -20,8 +20,8 @@ function App() {
     <ErrorBoundary>
       <Suspense fallback={<Loader />}>
         <UserProvider>
-          <CatalogProvider>
-            <Router>
+          <Router>
+            <CatalogProvider>
               <GlobalStyles />
               <LoginOpenProvider>
                 <Layout>
@@ -38,8 +38,8 @@ function App() {
                   </Switch>
                 </Layout>
               </LoginOpenProvider>
-            </Router>
-          </CatalogProvider>
+            </CatalogProvider>
+          </Router>
         </UserProvider>
       </Suspense>
     </ErrorBoundary>
