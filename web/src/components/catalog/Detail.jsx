@@ -133,22 +133,28 @@ const Detail = () => {
         <Content>
           <Name>{name}</Name>
           <Summary>{summary}</Summary>
-          {developers.length > 0 && <>
-            <p className="list-header">Developers:</p>
-            <ul>
-              {developers.map(({ id, name }) => (
-                <li key={id}>{name}</li>
-              ))}
-            </ul>
-          </>}
+          {developers.length > 0 && (
+            <>
+              <p className="list-header">Developers:</p>
+              <ul>
+                {developers.map(({ id, name }) => (
+                  <li key={id}>{name}</li>
+                ))}
+              </ul>
+            </>
+          )}
           <p className="list-header">Links:</p>
           {websites && (
             <ul>
               {websites.map((link) => (
                 <li key={link}>
-                  <a href={link} target="_blank" rel="noreferrer noopener">
+                  <WebsiteLink
+                    href={link}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
                     {link}
-                  </a>
+                  </WebsiteLink>
                 </li>
               ))}
             </ul>
@@ -179,6 +185,10 @@ const Wrapper = styled.div`
 const Row = styled.div`
   display: flex;
   align-items: flex-start;
+
+  @media (max-width: 60rem) {
+    display: block;
+  }
 `;
 
 const Aside = styled.aside`
@@ -189,6 +199,10 @@ const Aside = styled.aside`
 const Content = styled.div`
   margin-left: 1.75rem;
   flex-grow: 1;
+
+  @media (max-width: 60rem) {
+    margin-left: 0;
+  }
 
   .list-header {
     margin-bottom: 0.5rem;
@@ -207,6 +221,8 @@ const ImageSize = styled.div`
   flex-shrink: 0;
   width: 100%;
   overflow: hidden;
+  max-width: 24rem;
+  /* margin: 0 auto; */
 
   &:after {
     display: block;
@@ -289,6 +305,10 @@ const Themes = styled.p`
 
 const SimilarHeader = styled.h2`
   margin-top: 3rem;
+`;
+
+const WebsiteLink = styled.a`
+  word-break: break-word;
 `;
 
 export default Detail;
