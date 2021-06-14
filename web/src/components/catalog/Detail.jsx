@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { format } from "date-fns";
+import { Helmet } from "react-helmet";
 
 import Loader from "../common/Loader";
 import Rating from "../common/Rating";
@@ -92,6 +93,9 @@ const Detail = () => {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>{name} &ndash; Good Indie Games</title>
+      </Helmet>
       <Row>
         <Aside>
           <ImageSize>
