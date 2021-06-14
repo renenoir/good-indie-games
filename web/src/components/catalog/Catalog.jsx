@@ -30,7 +30,12 @@ function Catalog({ modifier = "games" }) {
       </Top>
       <InfiniteScroll
         pageStart={0}
-        loadMore={(page) => fetchGames(page, false, token)}
+        loadMore={(page) => {
+          if (loading) {
+            return;
+          }
+          fetchGames(page, false, token);
+        }}
         hasMore={!loading && !!next}
         loader={<CustomLoader key={0} />}
       >
