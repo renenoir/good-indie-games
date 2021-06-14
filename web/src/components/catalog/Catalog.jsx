@@ -1,6 +1,8 @@
 import React, { useEffect, memo } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
+import { Helmet } from "react-helmet";
+
 import List from "./List";
 import Loader from "../common/Loader";
 import Filters from "./Filters";
@@ -16,7 +18,7 @@ function Catalog({ modifier = "games" }) {
 
   useEffect(() => {
     setModifier(modifier);
-  }, []);
+  }, [modifier]);
 
   if (modifier === "saved" && !token) {
     return null;
@@ -24,13 +26,21 @@ function Catalog({ modifier = "games" }) {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>Good Indie Games</title>
+      </Helmet>
       <Top>
         <Filters />
         <Sorts />
       </Top>
       <InfiniteScroll
         pageStart={0}
-        loadMore={(page) => fetchGames(page, false, token)}
+        loadMore={(page) => {
+          if (loading) {
+            return;
+          }
+          fetchGames(page, false, token);
+        }}
         hasMore={!loading && !!next}
         loader={<CustomLoader key={0} />}
       >
