@@ -4,10 +4,10 @@ import styled from "styled-components";
 import Header from "./Header";
 import maxWidth from "../../styles/maxWidth";
 
-function Layout({ children, query, setQuery }) {
+function Layout({ children }) {
   return (
     <Container>
-      <GridHeader query={query} setQuery={setQuery} />
+      <GridHeader />
       <Main>{children}</Main>
     </Container>
   );

@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { SORTS, useCatalog } from "../../contexts/catalog";
 
-function Sorts({ sorts, sort, setSort }) {
+function Sorts() {
+  const { sort, setSort } = useCatalog();
+
   return (
     <Row>
-      {sorts.map(({ name, code }) => {
+      {SORTS.map(({ name, code }) => {
         const currentSort = sort.split("-");
         const isSelected = code === currentSort[currentSort.length - 1];
         const isDesc = currentSort.length !== 2 && isSelected;

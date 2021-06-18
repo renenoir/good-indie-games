@@ -4,6 +4,7 @@ import TextField from "@atlaskit/textfield";
 import { CheckboxSelect } from "@atlaskit/select";
 import Button from "../common/Button";
 import { Modal } from "react-responsive-modal";
+import { useCatalog } from "../../contexts/catalog";
 
 function useFetchFilter(name) {
   const [items, setItems] = useState([]);
@@ -24,20 +25,22 @@ function useFetchFilter(name) {
   return items;
 }
 
-function Filters({
-  // Dates
-  dateGte,
-  setDateGte,
-  dateLte,
-  setDateLte,
-  // Filters
-  selectedGenres,
-  setSelectedGenres,
-  selectedThemes,
-  setSelectedThemes,
-  selectedPlatforms,
-  setSelectedPlatforms,
-}) {
+function Filters() {
+  const {
+    // Dates
+    dateGte,
+    setDateGte,
+    dateLte,
+    setDateLte,
+    // Filters
+    selectedGenres,
+    setSelectedGenres,
+    selectedThemes,
+    setSelectedThemes,
+    selectedPlatforms,
+    setSelectedPlatforms,
+  } = useCatalog();
+
   const [isOpen, setIsOpen] = useState(false);
 
   function onOpen() {

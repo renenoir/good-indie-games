@@ -6,6 +6,7 @@ import { GRAY } from "../../styles/constants";
 import useUser from "../../hooks/useUser";
 import useLoginOpen from "../../hooks/useLoginOpen";
 import { Link } from "react-router-dom";
+import slugify from "slugify";
 
 function List({
   games,
@@ -34,9 +35,14 @@ function List({
           platforms,
         }) => {
           const favorite = favoritesHashmap[id] !== undefined;
+          const slug = slugify(name, {
+            remove: /[*+~.()'"!:@]/g,
+          }).toLowerCase();
+          const url = `/${id}/${slug}`;
+
           return (
             <Item key={id}>
-              <CustomLink to={`/${id}`} target="_blank">
+              <CustomLink to={url}>
                 <ImageSize>
                   <Image src={cover.replace(/t_thumb/g, "t_cover_big")} />
                 </ImageSize>
@@ -74,7 +80,7 @@ function List({
                     </Star>
                   </ToggleFavorite>
                 </Top>
-                <CustomLink to={`/${id}`} target="_blank">
+                <CustomLink to={url}>
                   <Title>{name}</Title>
                 </CustomLink>
                 <Platforms>

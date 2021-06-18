@@ -9,36 +9,38 @@ import useOutline from "../hooks/useOutline";
 import { UserProvider } from "../hooks/useUser";
 import { LoginOpenProvider } from "../hooks/useLoginOpen";
 import Detail from "./catalog/Detail";
+import { CatalogProvider } from "../contexts/catalog";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 
 function App() {
   useOutline();
-  const [query, setQuery] = useState("");
 
   return (
     <ErrorBoundary>
       <Suspense fallback={<Loader />}>
-        <Router>
-          <GlobalStyles />
-          <UserProvider>
-            <LoginOpenProvider>
-              <Layout query={query} setQuery={setQuery}>
-                <Switch>
-                  <Route exact path="/">
-                    <Catalog query={query} />
-                  </Route>
-                  <Route exact path="/saved">
-                    <Catalog query={query} modifier="saved" />
-                  </Route>
-                  <Route path={`/:id`}>
-                    <Detail />
-                  </Route>
-                </Switch>
-              </Layout>
-            </LoginOpenProvider>
-          </UserProvider>
-        </Router>
+        <UserProvider>
+          <Router>
+            <CatalogProvider>
+              <GlobalStyles />
+              <LoginOpenProvider>
+                <Layout>
+                  <Switch>
+                    <Route exact path="/">
+                      <Catalog />
+                    </Route>
+                    <Route exact path="/saved">
+                      <Catalog modifier="saved" />
+                    </Route>
+                    <Route path={`/:id`}>
+                      <Detail />
+                    </Route>
+                  </Switch>
+                </Layout>
+              </LoginOpenProvider>
+            </CatalogProvider>
+          </Router>
+        </UserProvider>
       </Suspense>
     </ErrorBoundary>
   );
