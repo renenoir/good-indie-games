@@ -12,7 +12,10 @@ popular_platforms = [
         'Xbox One',
         'Xbox 360',
         'iOS',
-        'Android'
+        'Android',
+        'PlayStation VR',
+        'SteamVR',
+        'Oculus VR'
 ]
 
 
