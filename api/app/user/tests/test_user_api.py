@@ -9,6 +9,9 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
+PASSWORD_RESET_REQUEST_URL = reverse(
+    'user:password_reset:reset-password-request'
+)
 
 
 def create_user(**params):
@@ -90,6 +93,14 @@ class PublicUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_reset_password(self):
+        """Test if password reset requested"""
+        create_user(**{'email': 'test@test.com', 'password': 'testpass'})
+        payload = {'email': 'test@test.com'}
+        res = self.client.post(PASSWORD_RESET_REQUEST_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
 class PrivateUserApiTests(TestCase):

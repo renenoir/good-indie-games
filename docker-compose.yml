@@ -37,6 +37,8 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
+      - FRONTEND_DOMAIN=${FRONTEND_DOMAIN}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     networks:
       - app-network
     depends_on:
