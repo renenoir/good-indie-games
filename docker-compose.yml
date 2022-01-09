@@ -7,12 +7,11 @@ services:
       context: ./web
       dockerfile: Dockerfile
     volumes:
-      - './web:/app'
-      - '/app/node_modules'
+      - "./web:/app"
     ports:
       - 3001:3000
     environment:
-      - CHOKIDAR_USEPOLLING=true  
+      - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
   api:
@@ -50,7 +49,7 @@ services:
       - dbdata:/var/lib/postgresql/data/
     networks:
       - app-network
-    environment: 
+    environment:
       - POSTGRES_DB=app
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

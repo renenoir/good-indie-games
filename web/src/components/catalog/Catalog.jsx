@@ -13,7 +13,7 @@ import { useCatalog } from "../../contexts/catalog";
 
 function Catalog({ modifier = "games" }) {
   const { token } = useUser();
-  const { data, fetchGames, setModifier, loading, next } = useCatalog();
+  const { data, fetchGames, setModifier, loading, next, page } = useCatalog();
   const { favoritesHashmap, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function Catalog({ modifier = "games" }) {
         <Sorts />
       </Top>
       <InfiniteScroll
-        pageStart={0}
+        pageStart={page}
         loadMore={(page) => {
           if (loading) {
             return;

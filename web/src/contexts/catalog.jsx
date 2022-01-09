@@ -31,6 +31,7 @@ const CatalogContext = createContext();
 const CatalogProvider = ({ children }) => {
   const { favoritesHashmap, addFavorite, removeFavorite } = useFavorites();
   const { token } = useUser();
+  const [page, setPage] = useState(0);
   const [query, setQuery] = useState("");
   const [modifier, setModifier] = useState("games");
   const [dateGte, setDateGte] = useState("");
@@ -106,6 +107,7 @@ const CatalogProvider = ({ children }) => {
     )
       .then((res) => res.json())
       .then(({ next, results }) => {
+        setPage(page);
         setNext(next);
         setData(clear ? results : [...data, ...results]);
         setLoading(false);
@@ -138,6 +140,10 @@ const CatalogProvider = ({ children }) => {
   function saveFilters() {
     const filters = {};
 
+    function stringifyParams(v) {
+      return stringify(v.map((s) => [s.label, s.value]));
+    }
+
     if (sort !== "" && sort !== defaultSort) {
       filters["sort"] = sort;
     }
@@ -148,13 +154,17 @@ const CatalogProvider = ({ children }) => {
       filters["dateLte"] = dateLte;
     }
     if (selectedGenres && selectedGenres.length > 0) {
-      filters["selectedGenres"] = JSON.stringify(selectedGenres);
+      filters["selectedGenres"] = stringifyParams(selectedGenres);
     }
     if (selectedThemes && selectedThemes.length > 0) {
-      filters["selectedThemes"] = JSON.stringify(selectedThemes);
+      filters["selectedThemes"] = stringifyParams(selectedThemes);
     }
     if (selectedPlatforms && selectedPlatforms.length > 0) {
-      filters["selectedPlatforms"] = JSON.stringify(selectedPlatforms);
+      filters["selectedPlatforms"] = stringifyParams(selectedPlatforms);
+    }
+
+    if (!Object.keys(filters).length) {
+      return;
     }
 
     const qs = stringify(filters);
@@ -163,6 +173,17 @@ const CatalogProvider = ({ children }) => {
 
   function restoreFilters() {
     const filters = parse(location.search);
+
+    function paramsFromArray(v) {
+      const obj = parse(v);
+      return Object.keys(obj).map((key) => {
+        const item = obj[key];
+        return {
+          label: item[0],
+          value: item[1],
+        };
+      });
+    }
 
     if (filters["sort"]) {
       setSort(filters["sort"]);
@@ -175,13 +196,13 @@ const CatalogProvider = ({ children }) => {
     }
     try {
       if (filters["selectedGenres"]) {
-        setSelectedGenres(JSON.parse(filters["selectedGenres"]));
+        setSelectedGenres(paramsFromArray(filters["selectedGenres"]));
       }
       if (filters["selectedThemes"]) {
-        setSelectedThemes(JSON.parse(filters["selectedThemes"]));
+        setSelectedThemes(paramsFromArray(filters["selectedThemes"]));
       }
       if (filters["selectedPlatforms"]) {
-        setSelectedPlatforms(JSON.parse(filters["selectedPlatforms"]));
+        setSelectedPlatforms(paramsFromArray(filters["selectedPlatforms"]));
       }
     } catch (error) {
       console.error(error);
@@ -189,6 +210,7 @@ const CatalogProvider = ({ children }) => {
   }
 
   const value = {
+    page,
     data,
     sort,
     query,
