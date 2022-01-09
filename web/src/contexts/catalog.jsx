@@ -163,8 +163,6 @@ const CatalogProvider = ({ children }) => {
       filters["selectedPlatforms"] = stringifyParams(selectedPlatforms);
     }
 
-    console.log(filters);
-
     if (!Object.keys(filters).length) {
       return;
     }
