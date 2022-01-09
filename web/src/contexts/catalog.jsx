@@ -31,6 +31,7 @@ const CatalogContext = createContext();
 const CatalogProvider = ({ children }) => {
   const { favoritesHashmap, addFavorite, removeFavorite } = useFavorites();
   const { token } = useUser();
+  const [page, setPage] = useState(0);
   const [query, setQuery] = useState("");
   const [modifier, setModifier] = useState("games");
   const [dateGte, setDateGte] = useState("");
@@ -106,6 +107,7 @@ const CatalogProvider = ({ children }) => {
     )
       .then((res) => res.json())
       .then(({ next, results }) => {
+        setPage(page);
         setNext(next);
         setData(clear ? results : [...data, ...results]);
         setLoading(false);
@@ -189,6 +191,7 @@ const CatalogProvider = ({ children }) => {
   }
 
   const value = {
+    page,
     data,
     sort,
     query,
