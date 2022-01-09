@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:14.5.0-alpine
+FROM node:14-alpine
 
 # docker-compose up -d --build
 
