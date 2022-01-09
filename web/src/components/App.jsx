@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import GlobalStyles from "../styles/global";
@@ -10,6 +10,7 @@ import { UserProvider } from "../hooks/useUser";
 import { LoginOpenProvider } from "../hooks/useLoginOpen";
 import Detail from "./catalog/Detail";
 import { CatalogProvider } from "../contexts/catalog";
+import NewPassword from "./layout/NewPassword";
 
 const Catalog = lazy(() => import("./catalog/Catalog"));
 
@@ -23,6 +24,7 @@ function App() {
           <Router>
             <CatalogProvider>
               <GlobalStyles />
+              <NewPassword />
               <LoginOpenProvider>
                 <Layout>
                   <Switch>
